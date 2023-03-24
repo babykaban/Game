@@ -1,0 +1,575 @@
+You have arrived in the village of Havencross looking for a magical stone - the Heart of Elders. You believes the artifact is hidden in the nearby mountains known as the Shadow Peaks. You hope to use the artifact's power to create a cure for the deadly sickness that claimed the lives of your family. You have faced many challenges on the journey, but you remain determined in your search.
+
+"Havencross"
+A bustling settlement surrounded by fertile farmland and dotted with homes.
+
+"Gorn's Shop"
+Local shop selling weapons, potions and spells.
+
+"The Drunken Dragon"
+A lively gathering place for locals and travelers alike, offering ale, food, and tales of adventure.
+
+"The Stinky Swamps"
+A murky expanse of stagnant water and twisted trees, home to dangerouscreatures and dark magic.
+
+"The Whispering Woods"
+A forest of tall trees and winding paths, where the rustling of leaves whispers secrets to those who dare to listen.
+
+"The Shadow Peaks"
+A towering range of jagged peaks shrouded in mist and mystery, dotted with caves and ancient ruins.
+
+The Cave
+A deep and dark cavern, rumored to be the source of the plague.
+
+
+First time move to the tavern:
+As you approached the Drunken Dragon tavern, you felt a sudden sense of unease upon seeing three shady figures. The tall man with a thick beard and a sly grin and the massive brute with bulging muscles exuded a dangerous aura. You took a deep breath and entered the tavern, ready for any danger that may come his way.
+
+Bandits (not drunk):
+You step out of the Drunken Dragon tavern, and the three shady figures you saw earlier move to surround you. The tall bandit leader steps forward and demands your coin purse, but you are ready to defend yourself.
+
+*fight*
+
+Bandits (drunk):
+You stumble out of the Drunken Dragon tavern, and the three shady figures you saw earlier move to surround you. The tall bandit leader steps forward and demands your coin purse, but you are in no shape to fight. The alcohol has dulled your senses, and you can barely even stand up straight.
+
+You feel something heavy hit your head, and fall into darkness.
+
+You wake up in the morning with a terrible headache. The bandits took all your gold, and there is no sign of them.
+
+*lose all gold*
+-20 HP
+
+Bandits:
+HP 40+20+20
+Attack
+  1. Weapon: miss chance depending on the weapon
+  2. Spell: small miss chance
+  3. Quickly pick up dust and throw it in the eyes of the leader
+     *no attacks from leader, x2 damage to the leader*
+When leader is defeted, others flee.
+Defend
+  1. Parry: damage*0.3
+  2. Evade: 30%
+  3. Magic shield: 100%
+
+
+In the tavern:
+
+You step into the Drunken Dragon tavern. The innkeeper greets you from behind the bar with a smile.  In the center of the room, a group of rowdy patrons are gathered, shouting and laughing as they down their drinks. You also spot an old woman sitting alone at a table in the corner.
+
+t1. Talk to the inkeeper
+
+You approach the innkeeper.
+"What can I get for you today?" he asks, his eyes twinkling.
+
+You ask innkeeper if he heard about the Heart of Elders.
+"I might. What's it worth to you?"
+
+  t1.1. Pay 10 gold.
+    "Ha! You really think a few coins will buy you knowledge that even the greatest sages have failed to uncover? Dream on, traveler. If you want to know about the Heart of Elders, you'll have to look elsewhere."
+    *the innkeeper doesn't want to talk to you anymore*
+
+  t1.2. Pay 30 gold.
+    "Ah, you want to know about the Heart of Elders, are you? Well, let me tell you a story. It was created by the first wizards, you see, to bring balance to the world. So powerful was it that they decided to hide it away, deep within the mountains, to protect it from falling into the wrong hands. Many have searched for it, but few have returned to tell the tale."
+    *you hasn't learned anything new*
+
+  t1.3. Walk away.
+
+t2. Join the party
+
+You approach the group of merrymakers, and they warmly welcome you to join their festivities. As you down mug after mug of ale, you find yourself losing track of time and becoming more and more inebriated. Eventually, you can barely stand and stumble out of the tavern, swaying unsteadily on your feet as you make your way back to your room.
+*you've got drunk*
+
+t3. Approach an old woman
+
+You sit at the table with the old woman, you hear her muttering to herself. You ask her if she knows anything about the Heart of Elders. She looks up at you and grumps "That old man, Jacob, is the one you should talk to. He talks about it all the time. I'd rather listen to the howling wind than hear him go on and on about it."
+*remember that you should find Jacob*
+
+
+In the village:
+
+You walk into the village on a sunny morning and observe the bustle of activity around you. You see a man sitting on a bench, looking sad and lost in thought. A group of women are chattering near the well, while in the distance you can see the towering spire of a church.
+
+v1. Visit the church
+
+A monk greets you with a nod and a warm smile.
+"Good morning, traveler! May I offer you a moment of respite and healing at our church? For a small fee, of course."
+
+    v1.1 Rest and heal (10 Gold)
+      +30 Health +30 Mana
+
+    v1.2 Ask if they need help with anything
+        "As a matter of fact, we are in need of herbs that we use to prepare our potions. They grow in the forest, and if you could bring some to us, we would be most grateful."
+        *gather herbs in the forest, bring here to get discount and healing potions*
+
+    *Jacob*
+    v1.3 Ask the monk if he knows where to find Jacob
+        "Jacob, you say? I don't hold kindly to that man, he rarely shows his face at the church. And as for where he might be, I haven't seen him in weeks. Some say he spends his days locked up in his cottage, but I wouldn't know for certain."
+
+    *Herbs*
+    v1.4 Give herbs to the monk
+    "You have done us a great service! Don't hesitate to come back if you ever need a place to rest or heal."
+
+
+v2. Apporach the sad man
+
+You see a young man sitting with his head in his hands. He looks up as you approach and you can see the tears in his eyes. You ask what happened.
+"My family heirloom, a necklace passed down from generation to generation, was stolen by a goblin! I feel like a part of me is gone, and I don't know what to do!"
+
+    v1.1 Leave him be
+    *Jacob*
+    v1.2 Ask him about Jacob
+    "I'm sorry, I don't know anyone by that name."
+
+v3. Approach a group of women
+
+    v3.1 Ask about the area
+Women suggest visiting the local tavern, where one can find travelers and locals alike.
+They mention the nearby forest, filled with an abundance of herbs and wildlife.
+They warn you about the swamp, home to many dangerous creatures.
+One of them tells you about a Troll that lives under the bridge on the way to the mountains. The Troll is a grumpy and greedy creature, who demands toll from anyone who wants to cross the bridge.
+
+    v3.2 Ask about their problems
+Women mention guards stationed on the path to the swamp, who they say have been causing trouble for travelers.
+Also they complain about mischievous goblin who has been stealing things from the villagers.
+One girl warns you about the griffin that resides in the mountains, known to attack travelers who venture too close to its nest. Others giggle to that.
+
+    *Jacob*
+    v3.3 Ask if they know Jacob
+"Jacob is a strange man, always talking about legends and tales from the past. He's not well-liked you know. He lives in the old hut at the edge of the village. Just follow the path that leads towards the forest and you can't miss it."
+    *you know where Jacob lives*
+
+*Jacob*
+v4. Find Jacob's place
+
+    Jacob's home is a small, run-down cottage located on the outskirts of the village. It is surrounded by overgrown shrubs and trees, and the roof is partially caved in.
+
+    v4.1. Knock on the door
+        You knocked on the door, but there was no answer. Despite this, you could hear someone moving inside the house.
+
+    v4.2. Yell Jacob's name
+        You try calling out Jacob's name, but there's no response. You start to wonder if perhaps he's not home, or if he's purposely avoiding you.
+
+    *v4.1 and v4.2 were both tried*
+    v4.3. Try to open the door
+    The door is not locked. You see that the inside of the house is a mess. Furniture is overturned and there's a trail of broken objects leading to the back room. You call out Jacob's name again, but there's still no response. You decide to investigate further to see if Jacob is okay.
+
+      -> Look around
+
+    You find a man fast asleep in his bed, snoring softly. The room is dimly lit and quiet except for the sound of Jacob's breathing.
+
+      -> Wake him up
+
+    As you shake the man gently, he slowly opens his eyes and blinks a few times, looking around in confusion before finally focusing on you. "Who are you?" he asks, sounding groggy.
+
+        0. Ask who he is
+           "Aren't we the curious one? Before I tell you who I am, why don't you tell me who you are?"
+        1. Tell that you are looking for The Heart of Elders
+           "The Heart of Elders? I've never heard of it."
+        2. Tell that you are from the city guard, and he is arrested
+           "Ha! "Arrested? What for? I haven't done anything wrong lately."
+        3. Tell if he doesn't do as you say, you're going to kill him
+           He laughs in your face: "I've faced death many times before," he says. "Go ahead, do it if you've got the guts."
+
+        *when all options exhausted*
+
+        "Look, I'm getting tired of this conversation. Be on your way. I wouldn't say no to a drink though if you decide to visit again."
+
+        *beer*
+        4. Offer man a drink.
+
+        He takes it gratefully and raises it to his lips. He takes a sip. "Ah, this is just what I needed," he says with a smile. "I've been living in this abandoned home for a while now, just trying to get by. It's nice to have some company for a change." The man then proceeds to tell you more about himself and his life, but as he talks, it becomes clear that he is not Jacob.
+
+        5. Leave
+
+     *if beer spent*
+     As you step out of the abandoned house, you notice a tall man standing near the door, who looks as if he was about to enter the house himself. "What are you doing in my house?" the man asked, his eyes narrowed suspiciously.
+
+     0. Ask who he is
+        "Answer my question first. Why were you in my home?"
+     1. Tell that you are looking for The Heart of Elders
+        "In my house? Wow, you must be a legendary treasure hunter."
+     2. Tell that you are from the city guard, and he is arrested
+        "If you are going to pretend to be a guard, at least dress accordingly."
+     3. Tell if he doesn't do as you say, you're going to kill him
+        "... Are you feeling well?"
+
+     *when 2/4 options exhausted*
+     4. Try to explain the situation
+
+     You finally are able to explain that someone is living in this home, and you have mistaken that man for Jacob.
+
+     "So, you're saying someone was in my house? Well, I've been away for a few weeks, so I wouldn't be surprised if someone took advantage of my absence."
+
+     -> continue
+
+     Jacob pauses for a moment and looks thoughtful.
+     "I know the Heart of Elders is hidden in a cave deep in the Shadow Peaks. Getting there is a dangerous journey, but I've been there before. I know a shortcut through the swamp, that way we can go around that Troll."
+     "If you're willing to take the risk, I can tell you how to get through the swamp. However I won't join you. I risked my life far too many times in the past."
+
+     *you now know the path from the Stinky Swamps to the Shadow Peaks*
+
+
+The Stinky Swamps
+
+  *if guards are there*
+
+  As you approach the path leading to the swamps, you're stopped by three guards. They stand in front of the entrance, blocking your way. One of the guards steps forward.
+  "No one is allowed to enter the swamps. It's too dangerous."
+  You explain that you can handle yourself. The guards exchange skeptical glances, sizing you up.
+  "Even if that is true we can't make any exceptions. No one is allowed in."
+
+  *if you have partied in the tavern*
+
+  One of the guards steps forward and looks at you closely. Suddenly, his eyes light up.
+  "Hey, I remember you! You were at the tavern with us a few days ago. That was one wild night!" The other guards nod in agreement, smiling.
+  "We'll let you through this time, but don't make a habit of it. We wouldn't want to have to save you from the swamp creatures again, haha!"
+  They step aside, allowing you to pass.
+
+  *if you have not partied in the tavern*
+  1. Look for a path around the guards
+     As you consider making a detour around the guards, one of them speaks up.
+     "Don't even think about it. That swamp is treacherous. The ground is unstable, and there are creatures in there that would make a meal out of you in a heartbeat. Trust me, you don't want to go that way."
+     The guard shudders at the thought of the dangers in the swamp, and the other two nod in agreement.
+
+     1.1 Ignore the warning and go around
+
+         *GAME OVER*
+
+         *random 1 of 3*
+         1. You ignored the guards' warning and ventured into the swamp. Your steps sink into the murky water as hidden predator pulls you under. The last thing you feel is the sharp teeth of a swamp monster piercing your skin.
+         2. Despite the warnings, you forge ahead. Then the ground gives way beneath your feet and you fall. Struggling to escape, you slowly sink deeper and deeper into the swamp's murky depths, never to be seen again.
+         3. You ignore the guards' warning and try to find a way around. Suddenly you feel a sharp pain in your leg. Looking down, you see a venomous snake has bitten you. You try to drag yourself to safety, but it's too late. The snake's venom is too strong and you collapse into the murky water.
+
+  2. Bribe the guards (75 gold)
+     You reach into your pocket and pull out a pouch of coins, offering it to the guards. They take a look at each other, then back at you, considering the offer.
+     "Well, we could make an exception for the right price. But you're taking your own risk, adventurer."
+     They each take a coin from the pouch and step aside, letting you pass.
+
+  3. Attack the guards
+
+  TODO: *fight guards*
+
+
+ *after the guards are passed*
+
+  As you enter the swamp, you're hit by the stench of decaying vegetation. The ground beneath your feet is soft and squishy. Trees and shrubs grow in clusters, and vines hang down from their branches. The water in the marsh is murky, and the occasional sound of a croaking frog can be heard in the distance. The atmosphere is eerie and unwelcoming, and it's clear that navigating through this swamp won't be an easy task.
+
+  1. Explore the swamp
+
+     // The following is a list of things that may happen after player chooses to explore.
+     // Each item has a weight, some items can only happen once.
+     // The game chooses the item randomly from all possible, considering the weight.
+     // For example, if weight of option A is 2, and B is 3, and C is 5  then
+     //     the chance P(A) = 2 / (2+3+5) = 20%
+     //                P(B) = 3 / (2+3+5) = 30%
+     //                P(C) = 5 / (2+3+5) = 50%
+
+     One time. W = 10
+     1a. You stumble upon a clearing in the swamp and find a strange stone statue. As you examine it, you notice that the statue is imbued with magical energy.
+         1. Cast a spell on the statue.
+            The statue comes to life and reveals itself to be a friendly spirit. It offers to aid you in your quest and grants you a boon of increased mana.
+                +10 Max Mana
+         2. Investigate the statue more closely.
+            You find a gem in the statue's eye socket.
+                + "Gem" (costs 50 gold)
+         3. Leave the statue alone.
+            You leave the statue undisturbed and continue on your way.
+
+     One time. W = 10
+     1b. You've found a mysterious obelisk, its surface covered in glowing runes. As you approach, you feel a strange energy emanating from the stone.
+         1. Touch the obelisk.
+            The runes pulse as you place your hand on the obelisk, and you feel a surge of power.
+                + Restore mana to full
+         2. Examine the obelisk.
+            You study the runes on the obelisk and learn a new spell.
+                + "Water splash" spell - makes an enemy wet (double damage from Frostbolt), makes enemy to skip 1 attack (stun)
+         3. Ignore the obelisk.
+
+     One time. W = 20
+     1c. You come across a rusted sword half-buried in the mud. As you pull it free, the blade gleams in the sunlight.
+         1. Pick up the sword.
+            The sword is rusty and dirty, but you take it anyway.
+                + "Rusty sword" (5 damage, 10 gold)
+         2. Attempt to clean the sword before picking it up.
+            You spend some time cleaning the sword and it looks like it was not here for that long.
+                - 30 mana
+                + "Fine sword"  (15 damage, 30 gold)
+         3. Move on.
+
+     Repeatable. W = 15
+     1d1. As you move through the swamp, you notice some beautiful purple flowers growing along the path. Suddenly, you hear a faint hissing noise coming from the plants.
+
+         1. Pick some flowers.
+            You carefully pluck some of the purple flowers and add them to your inventory.
+                + "Purple flowers" (5 gold)
+         2. Attack the plants.
+            You attack the plants, but the hissing gets louder and louder until a swarm of angry wasps emerges and attacks you.
+                -10 health
+         3. Move on.
+
+     Repeatable. W = 15
+     1d2. As you move through the swamp, you notice some beautiful purple flowers growing along the path. Suddenly, you hear a faint hissing noise coming from the plants.
+
+         1. Pick some flowers.
+            You try to pluck some of the purple flowers, but the hissing gets louder and louder until a swarm of angry wasps emerges and attacks you.
+                -10 health
+         2. Attack the plants.
+            You attack the plants, and happen to hit a snake that was lurking in the flowers. You might get some money for it in the store.
+                + "Dead snake" (5 gold)
+         3. Move on.
+
+     Repeatable. W = 20
+     1e. You step on a patch of seemingly solid ground, but as you put your full weight on it, you suddenly start sinking in quicksand. You struggle to free yourself but it's no use - you're stuck.
+         1. Attempt to free yourself by force.
+            You exert all your strength to pull yourself out of the quicksand.
+                50% chance: -10 Health
+                50% chance: nothing
+         2. Cast a spell to create solid ground under your feet.
+                50% chance: -10 Mana
+                50% chance: nothing
+
+     3 times. W = 15
+     1f. You hear a loud splashing noise and a giant, slimy creature emerges from the swamp. It looks like a cross between an octopus and a crocodile.
+         1. Attack the creature.
+            Croctopus
+            20 Health
+              Weapon: 0.8 * damage
+              Spells: 1.2 * damage
+              Parry: 20%
+              Evade: 80%
+              Magic shield: 60%
+            Random loot:
+                 +10 gold
+              OR +1 health potion
+              OR +1 mana potion
+         2. Use a spell to distract the creature.
+            You cast a spell to create a loud noise, which causes the creature to turn away from you.
+            -10 mana
+
+      W = 10
+        + 10 if you talked to a sad man
+        + 10 if you asked women about their problems
+      1g. [Goblin] You hear a soft rustle behind you and turn to see a small green goblin clutching a shiny object. "This trinket is mine now!" he shouts, brandishing a rusty dagger.
+         1. Attack the goblin
+            Goblin
+            60 Health
+              Weapon: miss chance 30%
+              Spells: miss chance 15%, fire x2
+              Parry: 80%
+              Evade: 10%
+              Magic shield: 80%
+            Loot:
+              "Golden Locket" (200 gold), quest item
+
+  *if Jacob told about the shortcut*
+  2. Follow Jacob's directions
+
+
+======================================================================================== The text belove is not added =======================================================================
+
+
+The Whispering Woods
+
+As you enter the Forest, the sound of rustling leaves and chirping birds fills your ears. The sunlight filtering through the trees creates a dappled pattern on the forest floor.
+
+  1. Go to the "The Shadow Peaks" mountains
+  2. Explore the forest
+
+//DONE
+    One time. W = 10
+    a. You come across a group of villagers who are gathering berries. They offer you some berries, and also warn you of a dangerous bear that has been spotted in the area.
+        1. Accept the berries and continue on your way.
+           You thank the villagers and take the berries with you.
+           + "Berries"
+        2. Ask the villagers for more information about the bear.
+           The villagers tell you that the bear is known to be aggressive and advise you to stay away from it.
+           "Bear attacks" encounter weight halves (W = W / 2)
+        3. Offer to help the villagers gather berries in exchange for information on the bear.
+           You spend some time gathering berries with the villagers, and they tell you about a nearby cave where the bear is rumored to live.
+           -20 mana
+           + "Berries"
+           "Bear's lair" encounter becomes available (bear's lair = true)
+//DONE
+    One time. W = 10 "Bear attacks"
+    b. As you wander deeper into the forest, a sudden rustling catches your attention. Before you can react, a massive bear charges out of the underbrush and barrels toward you.
+        1. Fight the bear.
+           You raise your weapon and charge at the bear, ready to defend yourself.
+            50 Health, 20-30 damage
+              Weapon: 1.0x damage
+              Spells: 1.5x damage
+              Parry: doesn't work
+              Evade: 70%
+              Magic shield: 80%
+            Loot:
+              + "Bear hide" (80 gold)
+        2. Run away from the bear.
+           You turn and flee as fast as you can, hoping to outpace the bear. Fortunately, at some point the bear stopped chasing you.
+           -50 mana
+        *if you have "Berries"*
+        3. Try to offer berries to the bear
+           The bear looks at you for a moment, then sniffs at the berries. It seems to appreciate the gesture and munches on them happily. You quietly walk away.
+//DONE
+    *if bear's lair = true*
+    One time. W = 20
+    c. As you push through the underbrush, you come across a small cave entrance. Inside, you spot the bear's lair and the glint of something shiny on the floor.
+        1. Search the lair
+           // Player can repeat this 2 times without consequences. Starting from the third time, there is a probability of "Bear attacks" encounter as a result of the "search".
+           // The probability increases like this: 0% -> 0% -> 35% -> 70% -> 100%
+           1) As you rummage through the bear's stash, you spot a glint of silver, and pick up a beautiful ring.
+              + "Silver ring" (30 gold)
+           2) You find a well-worn coat among the bear's belongings, it's made of fur and looks warm.
+              + "Warm coat" (armor, -5% physical damage, 10 gold)
+           3) You discover a small pouch containing various coins and gems.
+              +25 gold
+           4) You come across a stash of rare herbs, carefully arranged and preserved.
+              +3 "Herbs" (can be brought to the church)
+           5) You notice a faint glow coming from a small pendant in the bear's lair, it's unlike anything you've seen before.
+              + "Magic pendant" (-10% all enemy damage)
+           6) You discover an old backpack that appears to have belonged to a traveler, still in good condition despite being weathered.
+              + "Old backpack" (15 gold)
+           7) Your eyes catch a glimmer of metal beneath a pile of leaves, revealing a rusted but sturdy dagger.
+              + "Rusty dagger" (8 damage, 10 gold)
+           8) Hidden in a corner, you find a set of tools that could be useful for crafting or repairing.
+              + "Crafting tools" (30 gold)
+           9) You uncover a small box filled with various trinkets, including a silver hairpin and a polished stone.
+              +25 gold
+          10) As you inspect a pile of rocks, you discover a small key and decide to take it.
+              + "A key from the bear's lair"
+        2. Leave
+//DONE
+    Repeatable N = 10 times. W = N * 3 "Herbs"
+    d. As you wander through the forest, you notice a patch of vibrant green leaves growing by the base of a tree.
+        1. Collect the leaves.
+           You carefully gather the leaves and place them in your pouch.
+           +1 "Herbs" (5 gold)
+        2. Leave the leaves alone.
+//DONE
+    Repeatable N = 10 times. W = N * 3 "Boar"
+    e. As you wander through the forest, you spot a wild boar rustling in the bushes.
+        1. Hunt the boar.
+           // Chance of successful hunt depends on items in the inventory.
+           // Default success chance is 20%
+           //   +30% from "Hunting bow"
+           //   +20% from "Hunting knife"
+           //   Use of "Magic flute" (20 mana) guarantess the success
+           Success: You successfully hunt the boar and collect some meat and leather.
+                    + "Boar meat" (10 gold)
+                    + "Boar leather" (10 gold)
+           Failure: The boar senses your presence and charges at you, forcing you to retreat.
+        2. Leave the boar alone.
+        You decide to leave the boar alone and continue on your way.
+//DONE
+    Repeatable N = 3. W = N * 10
+    f. You come across a small clearing in the forest, and notice a group of people gathered around a campfire.
+       1. Approach the group.
+          70% chance: As you approach, the people welcome you warmly and invite you to join them by the fire. They share their food and stories with you, and you feel a sense of belonging.
+                      Restore +20 health and +20 mana
+          30% chance: You notice that they are heavily armed and don't seem friendly. But it's too late now. They demand that you hand over all your valuables, revealing themselves to be bandits.
+                      Lose all gold
+       2. Move on.
+//DONE
+    Repeatable N = 4. W = N * 4
+    g. You are walking through the forest when you hear a low growl. Looking around, you see a pack of wolves staring at you, their eyes glinting in the moonlight.
+       1. Fight the wolves.
+            3 wolves
+            15 Health, 10 damage
+              Weapon: 1x damage
+              Spells: 1x damage
+              Parry: 40%
+              Evade: 30%
+              Magic shield: 95%
+            Loot:
+              + "Wolven hide" (15 gold)
+       2. Try to run away.
+          80% chance: You turn and bolt in the opposite direction, but the wolves quickly catch up with you. They leap onto your back and bring you to the ground.
+                      -40 health
+          20% chance: Your heart races and your breath is ragged. After a few moments, you realize that you have lost them, and stop to catch your breath.
+       *if you have any meat*
+       3. Throw <name of meat item> to the wolves.
+          You rummage through your pack and find some meat. You throw it to the wolves and they eagerly pounce on it, giving you a chance to slip away unnoticed.
+       *if you have "Magic fluter"*
+       4. Use "Magic flute" (20 mana)
+          You cast a spell and the wolves become docile and friendly, licking your hand and wagging their tails. After a few moments, they trot off back into the woods, leaving you unharmed.
+//DONE
+    W = 1 "Mushrooms"
+    h. As you wander through the forest, your eyes catch sight of some peculiar-looking mushrooms growing on the base of a tree.
+       1. Pick up and eat the mushrooms.
+          As you consume the magic mushrooms, you feel the world around you transform into something fantastical and otherworldly. The colors of the forest become brighter, and the sounds of the animals become more vibrant. Your mind begins to wander, and you find yourself questioning the purpose of your quest. You begin to feel that perhaps it is all meaningless, and that there is more to life than chasing after some grand goal. In this altered state, you decide to abandon your quest and instead spend your days exploring the natural wonders of the forest, living in the present moment and enjoying the simple pleasures of life.
+          *GAME OVER*
+       2. Don't touch the mushrooms.
+
+    Repeatable. W = 15
+    i. A man appears, dressed in animal furs and carrying a bow. He introduces himself as a hunter and offers to trade with you.
+      1. Trade
+         Hunter sells:
+           - "Magic flute" (150 gold) // allows to charm animals
+           - "Hunting knife" (60 gold) +20% chance of success when hunting
+           - "Herbs" (20 gold)
+           - "Oak staff" (100 gold) - +10 max mana, +10% magic damage
+         Hunter buys everything, however herbs, meat an leather price is x0.3
+      2. Move on
+//DONE
+    One time. W = 5
+    j. As you wander through the forest, you stumble upon a clearing in which stands a circle of ancient stones. You feel a strange energy emanating from the center of the circle.
+       1. Investigate the stones
+          You notice that the stones are covered in intricate symbols that you don't recognize. However, you feel a strange pull towards them and a sense of peace washes over you.
+          *wolves and bear attack will never happen*
+       2. Meditate in the circle
+          You feel a strong connection to nature. You are able to hear the sounds of the forest more clearly and feel the breeze on your skin.
+          Restore +40 health and full mana, gain +5 max mana
+       3. Wait for the druids to return to the circle.
+          The forest grows darker and the night turns cold. You eventually give up waiting and decide to leave.
+          -20 mana
+       3. Leave.
+
+//DONE
+Troll
+
+*when hero goes from the forest to mountains and Troll blocks the bridge*
+*if Troll has been paid or defeated, go to the Mountains right away*
+
+You make your way from the forest to the mountains and come across a river. You approach the bridge and a loud voice booms out:
+"Who goes? Stop! No passes without pay! 500 gold!"
+A massive, ugly troll emerges from beneath the bridge, his eyes fixed on you with a greedy glint.
+
+    1. (once) Try to negotiate with the Troll.
+       The Troll listens to your proposal and considers it for a moment, but then shakes its head.
+       "No deal. Troll needs gold, not promises."
+       It then takes a step closer, brandishing its club menacingly.
+       "Pay up, or turn back."
+    2. (once) Ask when was the last time he let someone to cross
+       The Troll scratches his head and looks thoughtful for a moment.
+       "Hmm, I can't member. But you pay to cross!"
+    3. Pay 500 gold
+       "You may go." He steps aside and lets you cross the bridge.
+    4. Offer the Troll something else of value instead of money.
+       // Different things happen depeding on chosen item
+       "Golden Locket" - the only item the Troll will accept instead of payment
+           The Troll's eyes light up with greed as he snatches the golden locket from your hand.
+           "A fine shiny goodie," he says, examining the locket closely.
+           "You may go." He steps aside and lets you cross the bridge, grumbling to himself as you walk.
+        Any meat - Troll takes all the meat
+           The Troll snatches the meat from your hand and stuffs it into his mouth, grunting in satisfaction. You attempt to cross the bridge, the Troll blocks your way, shaking his head vigorously.
+           "No, no, no," he growls. "Not enough, not enough. I need more!"
+           You try to reason with the Troll, but he seems fixated on getting more meat.
+        Any equipment - Troll takes it
+           He takes the item from you, and then tosses it over his shoulder while still blocking your path.
+           "No gold, no pass."
+           You feel a sinking feeling in your stomach as you realize this was futile.
+        Anything else
+           "No!"
+    5. Attack the Troll.
+       Troll
+            500 Health, 30-50 damage
+              Weapon: damage x0.6
+              Spells: damage x1.2, fire damage x4
+              Parry: damage x0.9
+              Evade: 60%
+              Magic shield: damage x0.3
+            Loot:
+              +100 gold
+              + "Long sword" (25 damage, 100 gold)
+              + "Troll hide" (100 gold)
+
