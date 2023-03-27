@@ -1,2 +1,7 @@
-1. Test store, offer_troll, inventory and merchant events and create
-the constant type of items for each screen that use them.
+1. TODO: divide the inventory screen into two parts.
+    First part with item you can use and second one with tool items.
+    Also create an additional part of screen with armor.
+
+2. TODO: Replace dictionary in file screens.json with dictionary in file test_screens.json
+
+3. TODO: TEST EACH LOCATION IN GAME THOSE ARE CREATED!!!

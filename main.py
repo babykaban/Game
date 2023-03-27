@@ -91,6 +91,25 @@ flags = {"hero_saw_bandits": False,
          "fight_wolves": False} 
 
 # NOTE: for testing["Bastion Sword", "equip", {"type_of_weapon": "sword", "damage": 20}]
+"""
+NOTE: 
+      all weapons in the store should looks like this:
+        {"name": "", "price": 0, "type": ("weapon", "weapon"), "stats": {"type": "(axe or sword)", "damage": 0}}
+      
+      all counted items in the store should looks like this:
+        {"name": "", "price": 0, "type": ("counted", "")}
+      
+      all spells in the store should looks like this:
+        {"name": "", "price": 0, "type": ("spell", "spell"), "stats": {"effect": "", "damage": 0, "mana_cost": 0}}
+      
+      all tools in the store should looks like this:
+        {"name": "", "price": 0, "type": ("tools", "tool")}
+      
+      all armor in the store should looks like this:
+        {"name": "", "price": 0, "type": ("armor", (for which part of body)), "stats": {(all stats that this item has)}}
+
+"""
+
 
 store = [{"name": "Bastard sword", "price": 40, "type": ("weapon", "weapon"), "stats": {"type": "sword", "damage": 30}}, 
         {"name": "Heal Potion", "price": 10, "type": ("counted", "potion")}, 
@@ -105,7 +124,7 @@ merchant_store = \
     [{"name": "Lighting Bolt", "price": 30, "type": ("spell", "spell"), "stats": {"effect": "light", "damage": 20, "mana_cost": 35}},
      {"name": "Heal Potion", "price": 10, "type": ("counted", "potion")}, 
      {"name": "Mana Potion", "price": 10, "type": ("counted", "potion")},
-     {"name": "Oak staff", "price": 100, "type": ("armor", "armor"), "stats": {"mana": 10, "magic_damage": 10}},
+     {"name": "Oak staff", "price": 100, "type": ("armor", "body"), "stats": {"mana": 10, "magic_damage": 10}},
      {"name": "Hunting knife", "price": 60, "type": ("tools", "tool")},
      {"name": "Herbs", "price": 20, "type": ("counted", "leaves")},
      {"name": "Magic flute", "price": 150, "type": ("tools", "tool")}]
@@ -136,7 +155,7 @@ items_sell_prices = [{"item": "Heal Potion", "sell_price": 5},
                      {"item": "Bear hide", "sell_price": 80},
                      {"item": "Bastion Sword", "sell_price": 20},
                      {"item": "Wolven hide", "sell_price": 15},
-                     {"item": "", "sell_price": 0},
+                     {"item": "Pork", "sell_price": 10},
                      {"item": "", "sell_price": 0},
                      {"item": "", "sell_price": 0},
                      {"item": "", "sell_price": 0},
@@ -146,6 +165,22 @@ items_sell_prices = [{"item": "Heal Potion", "sell_price": 5},
 # Player state, inventory, spells, store
 
 # {"name": "Bastion Sword", "status": "equip", "stats": {"type_of_weapon": "sword", "damage": 20}}
+
+"""
+NOTE:
+    all weapons in the store should looks like this:
+        {"name": "", "status": [(equipped or equip), "weapon"], "stats":{"type_of_weapon": "(axe or sword)", "damage": 0}}
+    
+    all counted items in the store should looks like this:
+        {"name": "", "status": ("counted", (general definition: potion, leaves, meat ...)), "count": number of item},
+      
+    all tools in the store should looks like this:
+        {"name": "", "status": ("tools", "tool")}
+      
+    all armor in the store should looks like this:
+        {"name": "", "status": ("armor", ("part of body")), "stats": {(all stats that this item has)}} 
+"""
+
 inventory = [{"name": "Metal sword", "status": ["equipped", "weapon"], "stats":{"type_of_weapon": "sword", "damage": 10}},
              {"name": "Bastion Sword", "status": ["equip", "weapon"], "stats": {"type_of_weapon": "sword", "damage": 20}},
              {"name": "Heal Potion", "status": ("counted", "potion"), "count": 2},
@@ -158,7 +193,7 @@ spells = [{"name": "Arcane Misile", "stats" :{"effect": "nothing", "damage": 15,
 state = {"health": 100,
          "max_mana": 100,
          "mana": 100,
-         "gold": 100}
+         "gold": 1000}
 
 # Explore events in swamps
 swamp_events = ["statue", "obelisk", "rusted_sword", "purple_flowers_1", 

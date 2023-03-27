@@ -123,7 +123,7 @@ def offer_troll(screens, inventory, action):
             action = 0
         
         elif action != 0:
-            if inventory[action]["status"] == "equip":
+            if inventory[action]["status"][0] == "equip":
                 del inventory[action]
             elif inventory[action]["name"] == "Golden Locket":
                 del inventory[action]
