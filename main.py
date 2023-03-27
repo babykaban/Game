@@ -21,7 +21,7 @@ font_size_options_screens = 22
 font_size_health_spells = 20
 font_size_inventory = 16
 tip_text = ""
-
+option_index = 0
 
 screen_font = pygame.font.Font(font_name_options_screens, font_size_options_screens)
 options_font = pygame.font.Font(font_name_options_screens, font_size_options_screens)
@@ -119,7 +119,6 @@ store = [{"name": "Bastard sword", "price": 40, "type": ("weapon", "weapon"), "s
         {"name": "FireBall", "price": 40, "type": ("spell", "spell"), "stats": {"effect": "fire", "damage": 30, "mana_cost": 60}}, 
         {"name": "FrostBall", "price": 30, "type": ("spell", "spell"), "stats": {"effect": "ice", "damage": 25, "mana_cost": 40}}]
 
-# TODO: merchant in the forest
 merchant_store = \
     [{"name": "Lighting Bolt", "price": 30, "type": ("spell", "spell"), "stats": {"effect": "light", "damage": 20, "mana_cost": 35}},
      {"name": "Heal Potion", "price": 10, "type": ("counted", "potion")}, 
@@ -185,7 +184,8 @@ inventory = [{"name": "Metal sword", "status": ["equipped", "weapon"], "stats":{
              {"name": "Bastion Sword", "status": ["equip", "weapon"], "stats": {"type_of_weapon": "sword", "damage": 20}},
              {"name": "Heal Potion", "status": ("counted", "potion"), "count": 2},
              {"name": "Mana Potion", "status": ("counted", "potion"), "count": 2},
-             {"name": "Pork", "status": ("counted", "meat"), "count": 4}]
+             {"name": "Pork", "status": ("counted", "meat"), "count": 4},
+             {"name": "Tool", "status": ("tools", "tool")}]
 
 # NOTE: for testing ["FireBall", {"effect": "fire", "damage": 30, "mana_cost": 60}]
 spells = [{"name": "Arcane Misile", "stats" :{"effect": "nothing", "damage": 15, "mana_cost": 10}}]
@@ -226,6 +226,7 @@ def inventory_screen():
             processingInventoryEvents()
             del_all_options(screens["inventory"]["options"])
             add_inventory_in_screen()        
+
 # =========================================================== FIGHT_FUNCTIONS ======================================== #
 def choose_guard():
     global screen_id
@@ -603,7 +604,7 @@ def showInventory():
                     text += item["name"] + " \\p \n"
             elif item["status"][0] == "counted":
                 text += item["name"] + " " + str(item["count"]) + " \\p\n"
-            else:
+            elif item["status"][0] == "tools":
                 text += item["name"] + " \\p\n"
 
         renderTextAt(text, inventory_font, (0, 0, 0), 865, 320, screen, 800)
@@ -613,7 +614,7 @@ def showInventory():
 
 # TODO: Move to the events.py
 def add_inventory_in_screen():
-    text = ""
+    text = "Your tools and items: \\p\n"
     if screen_id == "inventory":
         for item in inventory:
             if item["status"][0] == "counted":
@@ -621,14 +622,17 @@ def add_inventory_in_screen():
             else:
                 if item["status"][0] == "equipped":
                     screens["inventory"]["options"].append((item["name"] + " (" + item["status"][0] + ")", "inventory"))
+       
                 elif item["status"][0] == "equip":
                     screens["inventory"]["options"].append((item["name"], "inventory"))
-                elif item["status"][0] == "item" or item["status"][0] == "tools":
+       
+                elif item["status"][0] == "items" or item["status"][0] == "tools":
                     text += item["name"] + " \\p\n"
-        renderTextAt(text, inventory_font, (0, 0, 0), 350, 150, screen, 800)
+                    renderTextAt(text, options_font, (0, 0, 0), 350, 115, screen, 800)
     else:
         text = ""
-        renderTextAt(text, inventory_font, (0, 0, 0), 350, 150, screen, 800)
+    
+    
 
 
 def processingInventoryEvents():
@@ -643,6 +647,7 @@ def processingInventoryEvents():
                 if inventory[action - 1]["count"] == 0:
                     del inventory[action - 1]
                     action = 0
+            
             elif item["name"] == "Mana Potion":
                 state["mana"] += 20
                 inventory[action - 1]["count"] -= 1
@@ -664,6 +669,7 @@ def processingInventoryEvents():
 
 def showScreen(screen, screen_font, options_font, tip_text):  
     global background
+    global option_index
     if screen_id == "inventory":
         options_text = ""
         i = 1
@@ -675,6 +681,16 @@ def showScreen(screen, screen_font, options_font, tip_text):
         renderTextAt(watch_screen["text"], screen_font, (0, 0, 0), 40, 115, screen, 850)
         renderTextAt(options_text, options_font, (0, 0, 0), 40, 150, screen, 450)
         renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
+
+        text_surface = font.render(inventory[option_index]["name"], True, (0, 0, 0))
+        text_width = text_surface.get_width()
+        text_height = text_surface.get_height()
+        
+        line_surface = pygame.Surface((text_width, text_height))
+        line_surface.fill((200, 200, 200))
+        
+        screen.blit(line_surface, (100, 100))
+
     elif screen_id == "sell" or screen_id == "buy" or screen_id == "offer_troll":
         options_text = ""
         i = 1
@@ -1055,14 +1071,19 @@ while global_running:
         elif event.type == pygame.KEYDOWN:
             # A key was pressed
             if event.key == pygame.K_ESCAPE and running and flags["inventory_open"]:
-                # The Esc key was pressed, exit the game
                 screen_id = inventory_location
                 flags["inventory_open"] = False
+            
             elif event.key == pygame.K_ESCAPE and running and (screen_id == "buy" or screen_id == "sell"):
                 screen_id = previous_store_screen
+            
+            elif event.key == pygame.K_ESCAPE and running and screen_id == "move":
+                screen_id = location
+            
             elif event.key == pygame.K_SPACE:
                 # The Space key was pressed, do something
                 running = True
+            
             elif event.key == pygame.K_1:
                 action = 1
                 print("Key 1 pressed")
@@ -1104,6 +1125,10 @@ while global_running:
                 screen_id = "inventory"
                 tip_text = "To close an inventory press ' Esc '" 
                 flags["inventory_open"] = True
+            elif event.key == pygame.K_UP and running:
+                option_index += 1
+            elif event.key == pygame.K_DOWN and running:
+                option_index -= 1    
 
     if running:
         # Update game state
@@ -1116,13 +1141,15 @@ while global_running:
                 "action": action,
                 "location_to_move": location_to_move
                 }
-
+        # Blit the background image onto the screen
+        screen.blit(background, (0, 0))
+        
         processingEvents()
         screen_id = check_mana_health_gold(screen_id)
         action = changeScreen(action)
-       
-        # Blit the background image onto the screen
-        screen.blit(background, (0, 0))
+        if screen_id in screens:
+            watch_screen = screens[screen_id]
+
         # Draw to the screen
         showScreen(screen, screen_font, options_font, tip_text)
         showHealth()

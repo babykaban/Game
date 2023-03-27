@@ -6,7 +6,7 @@
                           ["Go to the Drunken Dragon tavern", "tavern"]]},
     "move": {"text": "Choose location to move",
              "options": []},
-    "inventory": {"text": "Items:",
+    "inventory": {"text": "Weapon and items you can use:",
                   "options": [],
                   "function": "inventory_screen"},
     

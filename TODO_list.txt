@@ -5,3 +5,5 @@
 2. TODO: Replace dictionary in file screens.json with dictionary in file test_screens.json
 
 3. TODO: TEST EACH LOCATION IN GAME THOSE ARE CREATED!!!
+
+4. Create an arrow choose for inventory!
