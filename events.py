@@ -139,7 +139,6 @@ def troll_enemy(screens, flags, action):
 
 
 # ============================================ VILLAGE_EVENTS ================================================================ #
-# TODO: Move to events.py
 def church(screens, flags, state, action, pay):
     if flags["church_quest_done"]:
         screens["church"]["options"][0][0] = "Rest and heal (10 Gold)"
@@ -426,12 +425,12 @@ def processingStoreEvents(screen_id, screens, state, inventory, spells, store, i
                     inventory[find_item_index_inventory(item["name"], inventory)]["count"] += 1
                     state["gold"] -= item["price"]
                 elif state["gold"] >= item["price"] and not check_if_item_in_inventory(item["name"], inventory):
-                    inventory.append({"name": item["name"], "status": item, "count": 1})
+                    inventory.append({"name": item["name"], "status": item["type"], "count": 1})
                     state["gold"] -= item["price"]
 
-            elif item["type"] == "tools":
+            elif item["type"][0] == "tools":
                 if state["gold"] >= item["price"]:
-                    inventory.append({"name": item["name"], "status": item})
+                    inventory.append({"name": item["name"], "status": item["type"]})
                     del store[find_item_idex_store(item["name"], store)]
                     action = 0
                     state["gold"] -= item["price"]
@@ -449,6 +448,13 @@ def processingStoreEvents(screen_id, screens, state, inventory, spells, store, i
                     spells.append({"name": item["name"], "stats": {"effect": item["stats"]["effect"], 
                                              "damage": item["stats"]["damage"], 
                                              "mana_cost": item["stats"]["mana_cost"]}})
+                    del store[find_item_idex_store(item["name"], store)]
+                    action = 0
+                    state["gold"] -= item["price"]
+           
+            elif item["type"][0] == "armor":
+                if state["gold"] >= item["price"]:
+                    inventory.append({"name": item["name"], "status": item["type"], "stats": item["stats"]})
                     del store[find_item_idex_store(item["name"], store)]
                     action = 0
                     state["gold"] -= item["price"]
@@ -494,7 +500,7 @@ def buy_and_sell(screen_id, screens, state, inventory, spells, store, items_sell
     action = 0
     return action
 
-def store_screen(screens):
+def store_screen(screens, previous_store_screen):
     if len(screens["move"]["options"]) == 0:
         screens["move"]["options"].append(("Go to the Havencross", "village"))
         screens["move"]["options"].append(("Go to the Drunken Dragon tavern", "tavern"))
@@ -504,6 +510,11 @@ def store_screen(screens):
         screens["move"]["options"].append(("Go to the Havencross", "village"))
         screens["move"]["options"].append(("Go to the Drunken Dragon tavern", "tavern"))
         screens["move"]["options"].append(("Go to the Whispering Woods", "forest"))
+    previous_store_screen = "store"
+    return previous_store_screen
+def hunter_sells(previous_store_screen):
+    previous_store_screen = "hunter_sells"
+    return previous_store_screen
 # ============================================== END_STORE_EVENTS ============================================================= #
 
 # ================================================== FOREST_EVENTS ============================================================= #
@@ -563,7 +574,10 @@ def forest(flags, screens, screen_id, action, inventory,
             del forest_events[index]
             del forest_events_weights[index]      
             action = 0
-        elif event == "wolves": #Rep N = 4
+        elif event == "wolves": # Rep N = 4
+            screen_id = event
+            action = 0
+        elif event == "merchant": # Rep N = 15
             screen_id = event
             action = 0
 

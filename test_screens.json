@@ -340,6 +340,15 @@
     "throw_meat": {"text": "You rummage through your pack and find some meat. You throw it to the wolves and they eagerly pounce on it, giving you a  chance to slip away unnoticed.",
                    "options": [["Countinue", "forest"]]},
     
+    "merchant": {"text": "A man appears, dressed in animal furs and carrying a bow. He introduces himself as a hunter and offers to trade with you.",
+                 "options": [["Trade", "hunter_sells"],
+                             ["Move on", "forest"]]},
+
+    "hunter_sells": {"text": "",
+                     "options": [["Sell", "sell"],
+                                 ["Buy", "buy"]],
+                     "function": "hunter_sells"},
+
     "shadow_peaks_path": {"text": "You make your way from the forest to the mountains and come across a river. You approach the bridge and a loud voice booms out: \\p\n\"Who goes? Stop! No passes without pay! 500 gold!\" \\p\nA massive, ugly troll emerges from beneath the bridge, his eyes fixed on you with a greedy glint.",
                           "options": [["Try to negotiate with the Troll.", "negotiate_troll"],
                                       ["Ask when was the last time he let someone to cross", "ask_troll"],
@@ -368,39 +377,33 @@
                             "options": [["Move on", "shadow_peaks"]],
                             "function": "troll_golden_locket"},
     
-    "equipment_troll": {"text": "He takes the item from you, and then tosses it over"
-                                " his shoulder while still blocking your path. \\p\n"
-                                '"No gold, no pass." \\p\n'
-                                "You feel a sinking feeling in your stomach as you realize this was futile.",
+    "equipment_troll": {"text": "He takes the item from you, and then tosses it over his shoulder while still blocking your path. \\p\n\"No gold, no pass.\" \\p\n You feel a sinking feeling in your stomach as you realize this was futile.",
                         "options": [["Countinue", "offer_troll"]]}, 
     
-    "else_items_troll": {"text": '"NO!"',
+    "else_items_troll": {"text": "\"NO!\"",
                          "options": [["Countinue", "offer_troll"]]},
     
     "fight_troll": {"text": " adasdawdasd",
                     "options": [["Fight", "fight"]],
-                    "function": "troll_enemy"}, # Function in str
+                    "function": "troll_enemy"},
      
     "shadow_peaks": {"text": "adasdasd",
                      "options": [["Move back", "forest"]]},
-    # ===================================================END_SHADOW_PEAKS=================================================== #
 
-    # =============================================STORE============================================================== #
     "store": {"text": "Gorn's Shop sells weapons, potions and spells.",
 
               "options": [["Sell", "sell"],
                           ["Buy", "buy"]],
-              "function": "store_screen"}, # Function in str
+              "function": "store_screen"},
 
     "sell": {"text": "Items you can sell",
              "options": [],
-             "function": "buy_and_sell"}, # Function in str
+             "function": "buy_and_sell"},
 
     "buy": {"text": "Items you can buy",
             "options": [],
-            "function": "buy_and_sell"}, # Function in str
-    # =============================================ENDSTORE=========================================================== #
+            "function": "buy_and_sell"}, 
 
     "GAME_OVER": {"text": "",
-                  "options": [["Close Game", "GAME_OVER"]]},
+                  "options": [["Close Game", "GAME_OVER"]]}
 }

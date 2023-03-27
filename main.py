@@ -37,6 +37,7 @@ frame_rate = 33
 # Global veriables
 screen_id = "forest"
 watch_screen = "forest"
+previous_store_screen = ""
 running = False
 action = 0 
 inventory_location = ""
@@ -61,7 +62,7 @@ pay_for_rest = 20
  while player doing simething in the coresponding screen.
 
 """
-with open("screens.json", "r") as file:
+with open("test_screens.json", "r") as file:
     screens = json.load(file)
 
 # FLags to events
@@ -88,6 +89,99 @@ flags = {"hero_saw_bandits": False,
          "fight_bear": False,
          "berries": False,
          "fight_wolves": False} 
+
+# NOTE: for testing["Bastion Sword", "equip", {"type_of_weapon": "sword", "damage": 20}]
+
+store = [{"name": "Bastard sword", "price": 40, "type": ("weapon", "weapon"), "stats": {"type": "sword", "damage": 30}}, 
+        {"name": "Heal Potion", "price": 10, "type": ("counted", "potion")}, 
+        {"name": "Mana Potion", "price": 10, "type": ("counted", "potion")}, 
+        {"name": "Hunting Bow", "price": 30, "type": ("tools", "tool")}, 
+        {"name": "Axe's Axe", "price": 30, "type": ("weapon", "weapon"), "stats": {"type": "axe", "damage": 20}}, 
+        {"name": "FireBall", "price": 40, "type": ("spell", "spell"), "stats": {"effect": "fire", "damage": 30, "mana_cost": 60}}, 
+        {"name": "FrostBall", "price": 30, "type": ("spell", "spell"), "stats": {"effect": "ice", "damage": 25, "mana_cost": 40}}]
+
+# TODO: merchant in the forest
+merchant_store = \
+    [{"name": "Lighting Bolt", "price": 30, "type": ("spell", "spell"), "stats": {"effect": "light", "damage": 20, "mana_cost": 35}},
+     {"name": "Heal Potion", "price": 10, "type": ("counted", "potion")}, 
+     {"name": "Mana Potion", "price": 10, "type": ("counted", "potion")},
+     {"name": "Oak staff", "price": 100, "type": ("armor", "armor"), "stats": {"mana": 10, "magic_damage": 10}},
+     {"name": "Hunting knife", "price": 60, "type": ("tools", "tool")},
+     {"name": "Herbs", "price": 20, "type": ("counted", "leaves")},
+     {"name": "Magic flute", "price": 150, "type": ("tools", "tool")}]
+
+items_sell_prices = [{"item": "Heal Potion", "sell_price": 5},
+                     {"item": "Mana Potion", "sell_price": 5},
+                     {"item": "Metal sword", "sell_price": 10},
+                     {"item": "Axe's Axe", "sell_price": 15},
+                     {"item": "Bastard sword", "sell_price": 20},
+                     {"item": "Dead snake", "sell_price": 5},
+                     {"item": "Purple flowers", "sell_price": 5},
+                     {"item": "Gem", "sell_price": 50},
+                     {"item": "Rusty sword", "sell_price": 5},
+                     {"item": "Fine sword", "sell_price": 30},
+                     {"item": "Golden Locket", "sell_price": 100},
+                     {"item": "Long sword", "sell_price": 100},
+                     {"item": "Berries", "sell_price": 10},
+                     {"item": "Silver ring", "sell_price": 30},
+                     {"item": "Warm coat", "sell_price": 10},
+                     {"item": "Herbs", "sell_price": 5},
+                     {"item": "Old backpack", "sell_price": 15},
+                     {"item": "Crafting tools", "sell_price": 30},
+                     {"item": "Rusty dagger", "sell_price": 5},
+                     {"item": "Boar meat", "sell_price": 10},
+                     {"item": "Boar leather", "sell_price": 10},
+                     {"item": "Beer", "sell_price": 5},
+                     {"item": "Troll hide", "sell_price": 100},
+                     {"item": "Bear hide", "sell_price": 80},
+                     {"item": "Bastion Sword", "sell_price": 20},
+                     {"item": "Wolven hide", "sell_price": 15},
+                     {"item": "", "sell_price": 0},
+                     {"item": "", "sell_price": 0},
+                     {"item": "", "sell_price": 0},
+                     {"item": "", "sell_price": 0},
+                     {"item": "", "sell_price": 0}]
+
+
+# Player state, inventory, spells, store
+
+# {"name": "Bastion Sword", "status": "equip", "stats": {"type_of_weapon": "sword", "damage": 20}}
+inventory = [{"name": "Metal sword", "status": ["equipped", "weapon"], "stats":{"type_of_weapon": "sword", "damage": 10}},
+             {"name": "Bastion Sword", "status": ["equip", "weapon"], "stats": {"type_of_weapon": "sword", "damage": 20}},
+             {"name": "Heal Potion", "status": ("counted", "potion"), "count": 2},
+             {"name": "Mana Potion", "status": ("counted", "potion"), "count": 2},
+             {"name": "Pork", "status": ("counted", "meat"), "count": 4}]
+
+# NOTE: for testing ["FireBall", {"effect": "fire", "damage": 30, "mana_cost": 60}]
+spells = [{"name": "Arcane Misile", "stats" :{"effect": "nothing", "damage": 15, "mana_cost": 10}}]
+
+state = {"health": 100,
+         "max_mana": 100,
+         "mana": 100,
+         "gold": 100}
+
+# Explore events in swamps
+swamp_events = ["statue", "obelisk", "rusted_sword", "purple_flowers_1", 
+                "purple_flowers_2", "solid_ground", "creature", "goblin"]
+
+swamps_events_weights = [10, 10, 20, 15, 15, 20, 15, 10]
+
+# Explore events in forest
+numbered_forest_events = {"herbs": 10, "boar": 10, "travelers": 3, "wolves": 4}
+
+forest_events = ["villagers", "bear", "herbs", "boar", 
+                 "travelers", "wolves", "mushrooms", "merchant", "stone", "bear_lair"]
+
+forest_events_weights = [10, 10, numbered_forest_events["herbs"] * 3, 
+                         numbered_forest_events["boar"] * 3,
+                         numbered_forest_events["travelers"] * 10, 
+                         numbered_forest_events["wolves"] * 4, 1, 15000, 5, 0]
+
+# Explore events bear lair
+
+lair_events = ["ring", "coat", "gold_1", "lair_herbs", 
+               "pendant", "backpack", "tools", "dagger", "gold_2", "lair_key"]
+lair_weights = {"counter": 0, "bear_attack_chance": 0}
 
 def inventory_screen():
     if flags["inventory_open"]:
@@ -426,88 +520,6 @@ def renderTextAt(text, font, colour, x, y, screen, allowed_width):
         screen.blit(font_surface, (tx, ty))
 # ======================================================= END_RenderTextFunction ======================================= #
 
-# NOTE: for testing["Bastion Sword", "equip", {"type_of_weapon": "sword", "damage": 20}]
-
-store = [{"name": "Bastard sword", "price": 40, "type": ("weapon", "weapon"), "stats": {"type": "sword", "damage": 30}}, 
-        {"name": "Heal Potion", "price": 10, "type": ("counted", "potion")}, 
-        {"name": "Mana Potion", "price": 10, "type": ("counted", "potion")}, 
-        {"name": "Hunting Bow", "price": 30, "type": ("tools", "tool")}, 
-        {"name": "Axe's Axe", "price": 30, "type": ("weapon", "weapon"), "stats": {"type": "axe", "damage": 20}}, 
-        {"name": "FireBall", "price": 40, "type": ("spell", "spell"), "stats": {"effect": "fire", "damage": 30, "mana_cost": 60}}, 
-        {"name": "FrostBall", "price": 30, "type": ("spell", "spell"), "stats": {"effect": "ice", "damage": 25, "mana_cost": 40}}]
-
-# TODO: merchant in the forest
-travelling_merchant = ["Lighting Bolt", "Beather armor", "Heal Potion", "Mana Potion"]
-
-items_sell_prices = [{"item": "Heal Potion", "sell_price": 5},
-                     {"item": "Mana Potion", "sell_price": 5},
-                     {"item": "Metal sword", "sell_price": 10},
-                     {"item": "Axe's Axe", "sell_price": 15},
-                     {"item": "Bastard sword", "sell_price": 20},
-                     {"item": "Dead snake", "sell_price": 5},
-                     {"item": "Purple flowers", "sell_price": 5},
-                     {"item": "Gem", "sell_price": 50},
-                     {"item": "Rusty sword", "sell_price": 5},
-                     {"item": "Fine sword", "sell_price": 30},
-                     {"item": "Golden Locket", "sell_price": 100},
-                     {"item": "Long sword", "sell_price": 100},
-                     {"item": "Berries", "sell_price": 10},
-                     {"item": "Silver ring", "sell_price": 30},
-                     {"item": "Warm coat", "sell_price": 10},
-                     {"item": "Herbs", "sell_price": 5},
-                     {"item": "Old backpack", "sell_price": 15},
-                     {"item": "Crafting tools", "sell_price": 30},
-                     {"item": "Rusty dagger", "sell_price": 5},
-                     {"item": "Boar meat", "sell_price": 10},
-                     {"item": "Boar leather", "sell_price": 10},
-                     {"item": "Beer", "sell_price": 5},
-                     {"item": "Troll hide", "sell_price": 100},
-                     {"item": "Bear hide", "sell_price": 80},
-                     {"item": "Bastion Sword", "sell_price": 20},
-                     {"item": "Wolven hide", "sell_price": 15},
-                     {"item": "", "sell_price": 0}]
-
-
-# Player state, inventory, spells, store
-
-# {"name": "Bastion Sword", "status": "equip", "stats": {"type_of_weapon": "sword", "damage": 20}}
-inventory = [{"name": "Metal sword", "status": ["equipped", "weapon"], "stats":{"type_of_weapon": "sword", "damage": 10}},
-             {"name": "Bastion Sword", "status": ["equip", "weapon"], "stats": {"type_of_weapon": "sword", "damage": 20}},
-             {"name": "Heal Potion", "status": ("counted", "potion"), "count": 2},
-             {"name": "Mana Potion", "status": ("counted", "potion"), "count": 2},
-             {"name": "Pork", "status": ("counted", "meat"), "count": 4}]
-
-# NOTE: for testing ["FireBall", {"effect": "fire", "damage": 30, "mana_cost": 60}]
-spells = [{"name": "Arcane Misile", "stats" :{"effect": "nothing", "damage": 15, "mana_cost": 10}}]
-
-state = {"health": 100,
-         "max_mana": 100,
-         "mana": 100,
-         "gold": 100}
-
-# Explore events in swamps
-swamp_events = ["statue", "obelisk", "rusted_sword", "purple_flowers_1", 
-                "purple_flowers_2", "solid_ground", "creature", "goblin"]
-
-swamps_events_weights = [10, 10, 20, 15, 15, 20, 15, 10]
-
-# Explore events in forest
-numbered_forest_events = {"herbs": 10, "boar": 10, "travelers": 3, "wolves": 4}
-
-forest_events = ["villagers", "bear", "herbs", "boar", 
-                 "travelers", "wolves", "mushrooms", "merchant", "stone", "bear_lair"]
-
-forest_events_weights = [10, 10, numbered_forest_events["herbs"] * 3, 
-                         numbered_forest_events["boar"] * 3,
-                         numbered_forest_events["travelers"] * 10, 
-                         numbered_forest_events["wolves"] * 400, 1, 15, 5, 0]
-
-# Explore events bear lair
-
-lair_events = ["ring", "coat", "gold_1", "lair_herbs", 
-               "pendant", "backpack", "tools", "dagger", "gold_2", "lair_key"]
-lair_weights = {"counter": 0, "bear_attack_chance": 0}
-
 def showSpells():
     text = "Your spells: \\p\n"
     for spell in spells:
@@ -576,7 +588,7 @@ def add_inventory_in_screen():
                     screens["inventory"]["options"].append((item["name"] + " (" + item["status"][0] + ")", "inventory"))
                 elif item["status"][0] == "equip":
                     screens["inventory"]["options"].append((item["name"], "inventory"))
-                elif item ["status"][0] == "item" or item["status"][0] == "tools":
+                elif item["status"][0] == "item" or item["status"][0] == "tools":
                     text += item["name"] + " \\p\n"
         renderTextAt(text, inventory_font, (0, 0, 0), 350, 150, screen, 800)
     else:
@@ -683,6 +695,7 @@ def processingEvents():
     global screen_id
     global action
     global pay_for_rest
+    global previous_store_screen
 
     if screen_id in screens:
         print(screen_id)
@@ -717,8 +730,12 @@ def processingEvents():
         elif screen_id == "buy" or screen_id == "sell":
             tip_text = "To  exit press ' Esc '"
         
+        elif screen_id == "hunter_sells":
+            tip_text = "To open an inventory press ' I ' \\p\n To move on press ' M '"
+
         elif screen_id == "move":
             tip_text = "To open an inventory press ' I ' \\p\n Cancel movement ' Esc '" 
+        
         elif screen_id != "inventory":
             tip_text = "To open an inventory press ' I '" 
         
@@ -749,7 +766,11 @@ def processingEvents():
  
         elif screen_id == "store":
             func = eval(screens[screen_id]["function"])
-            func(screens)
+            previous_store_screen =  func(screens, previous_store_screen)
+        
+        elif screen_id == "hunter_sells":
+            func = eval(screens[screen_id]["function"])
+            previous_store_screen =  func(previous_store_screen)
         
         elif screen_id == "forest":
             func = eval(screens[screen_id]["function"])
@@ -799,8 +820,12 @@ def processingEvents():
             screen_id, action = func(screen_id, action, forest_events, forest_events_weights, state)
 
         elif screen_id == "buy" or screen_id == "sell":
-            func = eval(screens[screen_id]["function"])
-            action = func(screen_id, screens, state, inventory, spells, store, items_sell_prices, action)
+            if previous_store_screen == "store":
+                func = eval(screens[screen_id]["function"])
+                action = func(screen_id, screens, state, inventory, spells, store, items_sell_prices, action)
+            elif previous_store_screen == "hunter_sells":
+                func = eval(screens[screen_id]["function"])
+                action = func(screen_id, screens, state, inventory, spells, merchant_store, items_sell_prices, action)
         
         elif screen_id == "women_jacob":
             func = eval(screens[screen_id]["function"])
@@ -999,7 +1024,7 @@ while global_running:
                 screen_id = inventory_location
                 flags["inventory_open"] = False
             elif event.key == pygame.K_ESCAPE and running and (screen_id == "buy" or screen_id == "sell"):
-                screen_id = "store"
+                screen_id = previous_store_screen
             elif event.key == pygame.K_SPACE:
                 # The Space key was pressed, do something
                 running = True
@@ -1034,6 +1059,8 @@ while global_running:
                                             screen_id == "forest" or screen_id == "swamps_path"):
                 location = screen_id
                 screen_id = "move"
+            elif event.key == pygame.K_m and screen_id == "hunter_sells":
+                screen_id = "forest"
             elif event.key == pygame.K_m and running and screen_id == "shadow_peaks_path":
                 screen_id = "forest"
             elif event.key == pygame.K_i and running and screen_id != "inventory"\

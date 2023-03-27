@@ -1,0 +1,2 @@
+1. Test store, offer_troll, inventory and merchant events and create
+the constant type of items for each screen that use them.
