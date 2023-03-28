@@ -14,7 +14,8 @@ screen = pygame.display.set_mode((1128, 634))
 pygame.display.set_caption("Adventure Game")
 # Load the background image
 background = pygame.image.load("images//start.png")
-
+arrow_image = pygame.image.load("images//arrow.png")
+    
 # Create font objects
 font_name_options_screens = "fonts//BlackChancery.ttf"
 font_name_inventory_health_spells = "fonts//DragonHunter.otf"
@@ -218,10 +219,7 @@ forest_events_weights = [10, 10, numbered_forest_events["herbs"] * 3,
 lair_events = ["ring", "coat", "gold_1", "lair_herbs", 
                "pendant", "backpack", "tools", "dagger", "gold_2", "lair_key"]
 lair_weights = {"counter": 0, "bear_attack_chance": 0}
-
-def drawArrow():
     
-
 def inventory_screen():
     if flags["inventory_open"]:
         if len(screens["inventory"]["options"]) == 0:
@@ -618,7 +616,6 @@ def showInventory():
 
 # TODO: Move to the events.py
 def add_inventory_in_screen():
-    text = "Your tools and items: \\p\n"
     if screen_id == "inventory":
         for item in inventory:
             if item["status"][0] == "counted":
@@ -631,44 +628,41 @@ def add_inventory_in_screen():
                     screens["inventory"]["options"].append((item["name"], "inventory"))
        
                 elif item["status"][0] == "items" or item["status"][0] == "tools":
-                    text += item["name"] + " \\p\n"
-                    renderTextAt(text, options_font, (0, 0, 0), 350, 115, screen, 800)
+                    screens["inventory"]["options"].append((item["name"], "inventory"))
     else:
-        text = ""
-    
+        pass
     
 
 
-def processingInventoryEvents():
-    global action
-    if action != 0 and action - 1 < len(inventory):
-        item = inventory[action - 1]
+def processingInventoryEvents(index):
+    item = inventory[index]
+    
+    if item["status"][0] == "counted":
+        if item["name"] == "Heal Potion":
+            state["health"] += 20
+            inventory[index]["count"] -= 1
+            if inventory[index]["count"] == 0:
+                del inventory[index]
         
-        if item["status"][0] == "counted":
-            if item["name"] == "Heal Potion":
-                state["health"] += 20
-                inventory[action - 1]["count"] -= 1
-                if inventory[action - 1]["count"] == 0:
-                    del inventory[action - 1]
-                    action = 0
-            
-            elif item["name"] == "Mana Potion":
-                state["mana"] += 20
-                inventory[action - 1]["count"] -= 1
-                if inventory[action - 1]["count"] == 0:
-                    del inventory[action - 1]
-                    action = 0
-            elif item["name"] == "Beer":
-                state["health"] += 10
-                inventory[action - 1]["count"] -= 1
-                if inventory[action - 1]["count"] == 0:
-                    del inventory[action - 1]
-                    action = 0
+        elif item["name"] == "Mana Potion":
+            state["mana"] += 20
+            inventory[index]["count"] -= 1
+            if inventory[index]["count"] == 0:
+                del inventory[index]
 
-        elif item["status"][0] == "equip":
-            inventory[find_equipped_item_index_inventory(inventory)]["status"][0] = "equip"
-            inventory[action - 1]["status"][0] = "equipped"
-            action = 0
+        elif item["name"] == "Beer":
+            state["health"] += 10
+            inventory[action - 1]["count"] -= 1
+            if inventory[action - 1]["count"] == 0:
+                del inventory[action - 1]
+
+    elif item["status"][0] == "equip":
+        inventory[find_equipped_item_index_inventory(inventory)]["status"][0] = "equip"
+        inventory[action - 1]["status"][0] = "equipped"
+
+def drawArrow(image, x, y, index):
+    option_offset = 28 * index
+    screen.blit(image, (x, y + option_offset))
 
 
 def showScreen(screen, screen_font, options_font, tip_text):  
@@ -684,7 +678,7 @@ def showScreen(screen, screen_font, options_font, tip_text):
         renderTextAt(options_text, options_font, (0, 0, 0), 80, 150, screen, 450)
         renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
 
-        drawArrow()
+        drawArrow(arrow_image, 40, 152, option_index)
 
     elif screen_id == "sell" or screen_id == "buy" or screen_id == "offer_troll":
         options_text = ""
@@ -1121,9 +1115,13 @@ while global_running:
                 tip_text = "To close an inventory press ' Esc '" 
                 flags["inventory_open"] = True
             elif event.key == pygame.K_UP and running:
-                option_index += 1
+                if(option_index > 0):
+                    option_index -= 1
+                print("up " + str(option_index) + "\n")   
             elif event.key == pygame.K_DOWN and running:
-                option_index -= 1    
+                if(option_index < len(inventory) - 1):
+                    option_index += 1 
+                print("down " + str(option_index) + "\n")   
 
     if running:
         # Update game state
