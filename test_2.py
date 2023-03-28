@@ -2,21 +2,30 @@ import pygame
 
 pygame.init()
 
-font = pygame.font.Font(None, 36)
-text_surface = font.render("Your text here", True, (0, 0, 0))
+# Set up the Pygame display surface
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
 
-text_width = text_surface.get_width()
-text_height = text_surface.get_height()
+# Define the arrow's dimensions and position
+arrow_x, arrow_y = 100, 100
+arrow_width, arrow_height = 50, 20
 
-line_surface = pygame.Surface((text_width, int(text_height)))
-line_surface.fill((200, 200, 200))
+# Create a list of points for the arrow's polygon shape
+arrow_points = [(arrow_x, arrow_y),
+                (arrow_x + arrow_width, arrow_y),
+                (arrow_x + arrow_width, arrow_y + arrow_height // 2),
+                (arrow_x + arrow_width * 2, arrow_y + arrow_height // 2),
+                (arrow_x + arrow_width * 2, arrow_y + arrow_height),
+                (arrow_x, arrow_y + arrow_height)]
 
-line_surface.blit(text_surface, (0, 0))
+# Draw the arrow on the screen
+arrow_color = (255, 0, 0)  # Red
+pygame.draw.polygon(screen, arrow_color, arrow_points)
 
-screen = pygame.display.set_mode((800, 600))
-screen.blit(line_surface, (100, 100))
+# Update the display
 pygame.display.flip()
 
+# Wait for the user to close the window
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

@@ -1,3 +1,4 @@
+from tkinter import font
 import pygame
 import random
 import json
@@ -217,6 +218,9 @@ forest_events_weights = [10, 10, numbered_forest_events["herbs"] * 3,
 lair_events = ["ring", "coat", "gold_1", "lair_herbs", 
                "pendant", "backpack", "tools", "dagger", "gold_2", "lair_key"]
 lair_weights = {"counter": 0, "bear_attack_chance": 0}
+
+def drawArrow():
+    
 
 def inventory_screen():
     if flags["inventory_open"]:
@@ -672,24 +676,15 @@ def showScreen(screen, screen_font, options_font, tip_text):
     global option_index
     if screen_id == "inventory":
         options_text = ""
-        i = 1
         for opt in watch_screen["options"]:
-            options_text += "{} . {} \p ".format(i, opt[0])
-            i += 1
+            options_text += "{} \p ".format(opt[0])
 
         background = pygame.image.load("images//inventory.png")
         renderTextAt(watch_screen["text"], screen_font, (0, 0, 0), 40, 115, screen, 850)
-        renderTextAt(options_text, options_font, (0, 0, 0), 40, 150, screen, 450)
+        renderTextAt(options_text, options_font, (0, 0, 0), 80, 150, screen, 450)
         renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
 
-        text_surface = font.render(inventory[option_index]["name"], True, (0, 0, 0))
-        text_width = text_surface.get_width()
-        text_height = text_surface.get_height()
-        
-        line_surface = pygame.Surface((text_width, text_height))
-        line_surface.fill((200, 200, 200))
-        
-        screen.blit(line_surface, (100, 100))
+        drawArrow()
 
     elif screen_id == "sell" or screen_id == "buy" or screen_id == "offer_troll":
         options_text = ""
