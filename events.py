@@ -585,12 +585,15 @@ def forest(flags, screens, screen_id, action, inventory,
 
 def stone(screen_id, action, forest_events, forest_events_weights, state):
     if action == 1:
-        index = find_object_index_array("bear", forest_events)
-        del forest_events[index]
-        del forest_events_weights[index]
-        index = find_object_index_array("wolves", forest_events)
-        del forest_events[index]
-        del forest_events_weights[index]
+        if(check_if_object_in_array("bear", forest_events):
+            index = find_object_index_array("bear", forest_events)
+            del forest_events[index]
+            del forest_events_weights[index]
+        
+        if(check_if_object_in_array("wolves", forest_events)):
+            index = find_object_index_array("wolves", forest_events)
+            del forest_events[index]
+            del forest_events_weights[index]
     elif action == 2:
         state["health"] += 40
         state["max_mana"] += 5

@@ -94,6 +94,12 @@ def check_if_item_in_inventory(key, inventory):
             return True
     return False
 
+def check_if_object_in_array(key, array):
+    for object in array:
+        if object == key:
+            return True
+    return False
+
 def find_spell(key, spells):
     count = 0
     for spell in spells:

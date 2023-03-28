@@ -15,7 +15,7 @@ pygame.display.set_caption("Adventure Game")
 # Load the background image
 background = pygame.image.load("images//start.png")
 arrow_image = pygame.image.load("images//arrow.png")
-    
+
 # Create font objects
 font_name_options_screens = "fonts//BlackChancery.ttf"
 font_name_inventory_health_spells = "fonts//DragonHunter.otf"
@@ -30,6 +30,8 @@ options_font = pygame.font.Font(font_name_options_screens, font_size_options_scr
 health_mana_gold_font = pygame.font.Font(font_name_inventory_health_spells, font_size_health_spells)
 inventory_font = pygame.font.Font(font_name_inventory_health_spells, font_size_inventory)
 
+text_height = screen_font.get_height()
+
 # Set up the clock
 clock = pygame.time.Clock()
 
@@ -37,8 +39,8 @@ clock = pygame.time.Clock()
 frame_rate = 33
 
 # Global veriables
-screen_id = "forest"
-watch_screen = "forest"
+screen_id = "intro"
+watch_screen = "intro"
 previous_store_screen = ""
 running = False
 action = 0 
@@ -64,7 +66,7 @@ pay_for_rest = 20
  while player doing simething in the coresponding screen.
 
 """
-with open("test_screens.json", "r") as file:
+with open("screens.json", "r") as file:
     screens = json.load(file)
 
 # FLags to events
@@ -182,12 +184,14 @@ NOTE:
         {"name": "", "status": ("armor", ("part of body")), "stats": {(all stats that this item has)}} 
 """
 
+# For tests {"name": "Tool", "status": ("tools", "tool")}
+
 inventory = [{"name": "Metal sword", "status": ["equipped", "weapon"], "stats":{"type_of_weapon": "sword", "damage": 10}},
              {"name": "Bastion Sword", "status": ["equip", "weapon"], "stats": {"type_of_weapon": "sword", "damage": 20}},
              {"name": "Heal Potion", "status": ("counted", "potion"), "count": 2},
              {"name": "Mana Potion", "status": ("counted", "potion"), "count": 2},
-             {"name": "Pork", "status": ("counted", "meat"), "count": 4},
-             {"name": "Tool", "status": ("tools", "tool")}]
+             {"name": "Pork", "status": ("counted", "meat"), "count": 4}]
+
 
 # NOTE: for testing ["FireBall", {"effect": "fire", "damage": 30, "mana_cost": 60}]
 spells = [{"name": "Arcane Misile", "stats" :{"effect": "nothing", "damage": 15, "mana_cost": 10}}]
@@ -195,7 +199,7 @@ spells = [{"name": "Arcane Misile", "stats" :{"effect": "nothing", "damage": 15,
 state = {"health": 100,
          "max_mana": 100,
          "mana": 100,
-         "gold": 1000}
+         "gold": 100}
 
 # Explore events in swamps
 swamp_events = ["statue", "obelisk", "rusted_sword", "purple_flowers_1", 
@@ -212,7 +216,7 @@ forest_events = ["villagers", "bear", "herbs", "boar",
 forest_events_weights = [10, 10, numbered_forest_events["herbs"] * 3, 
                          numbered_forest_events["boar"] * 3,
                          numbered_forest_events["travelers"] * 10, 
-                         numbered_forest_events["wolves"] * 4, 1, 15000, 5, 0]
+                         numbered_forest_events["wolves"] * 4, 1, 15, 5, 0]
 
 # Explore events bear lair
 
@@ -225,7 +229,6 @@ def inventory_screen():
         if len(screens["inventory"]["options"]) == 0:
             add_inventory_in_screen()
         else:
-            processingInventoryEvents()
             del_all_options(screens["inventory"]["options"])
             add_inventory_in_screen()        
 
@@ -635,8 +638,7 @@ def add_inventory_in_screen():
 
 
 def processingInventoryEvents(index):
-    item = inventory[index]
-    
+    item = inventory[index]    
     if item["status"][0] == "counted":
         if item["name"] == "Heal Potion":
             state["health"] += 20
@@ -652,16 +654,16 @@ def processingInventoryEvents(index):
 
         elif item["name"] == "Beer":
             state["health"] += 10
-            inventory[action - 1]["count"] -= 1
-            if inventory[action - 1]["count"] == 0:
-                del inventory[action - 1]
+            inventory[index]["count"] -= 1
+            if inventory[index]["count"] == 0:
+                del inventory[index]
 
     elif item["status"][0] == "equip":
         inventory[find_equipped_item_index_inventory(inventory)]["status"][0] = "equip"
-        inventory[action - 1]["status"][0] = "equipped"
+        inventory[index]["status"][0] = "equipped"
 
-def drawArrow(image, x, y, index):
-    option_offset = 28 * index
+def drawArrow(image, x, y, index, text_height):
+    option_offset = text_height * index
     screen.blit(image, (x, y + option_offset))
 
 
@@ -678,7 +680,7 @@ def showScreen(screen, screen_font, options_font, tip_text):
         renderTextAt(options_text, options_font, (0, 0, 0), 80, 150, screen, 450)
         renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
 
-        drawArrow(arrow_image, 40, 152, option_index)
+        drawArrow(arrow_image, 40, 150, option_index, text_height)
 
     elif screen_id == "sell" or screen_id == "buy" or screen_id == "offer_troll":
         options_text = ""
@@ -1008,6 +1010,10 @@ def processingEvents():
             func = eval(screens[screen_id]["function"])
             func(screens, flags, action)
 
+
+
+# TODO: Replace this with functions and move into events.py
+
         elif screen_id == "church" or screen_id == "sad_man" or screen_id == "women":
             screens["village"]["text"] = '"Havencross" - a bustling settlement surrounded by fertile farmland and ' \
                                          'dotted with homes.'
@@ -1070,9 +1076,11 @@ while global_running:
                 screen_id = location
             
             elif event.key == pygame.K_SPACE:
-                # The Space key was pressed, do something
                 running = True
             
+            elif event.key == pygame.K_RETURN and running and screen_id == "inventory":
+                processingInventoryEvents(option_index)
+                
             elif event.key == pygame.K_1:
                 action = 1
                 print("Key 1 pressed")
@@ -1125,6 +1133,7 @@ while global_running:
 
     if running:
         # Update game state
+        screen_id = check_mana_health_gold(screen_id)
         # Global parameters that passes into fighting functions
         parameters = {"state": state, 
                 "inventory": inventory,
@@ -1138,7 +1147,6 @@ while global_running:
         screen.blit(background, (0, 0))
         
         processingEvents()
-        screen_id = check_mana_health_gold(screen_id)
         action = changeScreen(action)
         if screen_id in screens:
             watch_screen = screens[screen_id]

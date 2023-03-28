@@ -1,9 +1,21 @@
-1. TODO: divide the inventory screen into two parts.
-    First part with item you can use and second one with tool items.
-    Also create an additional part of screen with armor.
+1. TODO: TEST EACH LOCATION IN GAME THOSE ARE CREATED!!!
 
-2. TODO: Replace dictionary in file screens.json with dictionary in file test_screens.json
+2. TODO: Create a explanation icon for each item in inventory,
+    when player choose an item with an arrow.
 
-3. TODO: TEST EACH LOCATION IN GAME THOSE ARE CREATED!!!
+3. TODO: Create a functions for each death that can heppend.
 
-4. Create an arrow choose for inventory!
+4. TODO: Maybe add arrow pick to store, merchant and offer_troll???
+
+5. TODO: Add Spell screen then player can look what skills he has and 
+    what they do.
+
+6. TODO: Add a unic image for each screen ??
+
+7. TODO: Addd background music dependent to screen.
+
+8. TODO: Correct a print out of damage (remove decemal point)
+
+9. TODO: Correct option_text out in inside_jacob_house
+
+10. TODO: Add "Magic Flue" action for forest event Wolves
