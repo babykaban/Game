@@ -10,6 +10,10 @@
                   "options": [],
                   "function": "inventory_screen"},
     
+    "current_spells": {"text": "",
+                       "options": [],
+                       "function": "spells_screen"},
+    
     
     "village": {"text": "You walk into the village on a sunny morning and observe the bustle of activity around you. You see a man sitting on a bench, looking sad and lost in thought. A  group of women are chattering near the well, while in the distance you can see the towering spire of a church.",
                 "options": [["Visit the church", "church"],
@@ -321,8 +325,7 @@
     
     "wolves": {"text": "You are walking through the forest when you hear a low growl. Looking around, you see a pack of wolves staring at you, their eyes glinting in the moonlight.",
                "options": [["Fight the wolves.", "choose_wolf"],
-                           ["Try to runaway.", "run_away_wolves"],
-                           ["Use a \"Magic flute\" [20 mana]", "use_magic_wolves"]],
+                           ["Try to runaway.", "run_away_wolves"]],
                "function": "wolves_func"},
 
     "choose_wolf": {"text": "Choose wolf to attack",

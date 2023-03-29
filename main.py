@@ -2,6 +2,7 @@ from tkinter import font
 import pygame
 import random
 import json
+
 from events import *
 from fights import *
 from enemes import *
@@ -39,8 +40,8 @@ clock = pygame.time.Clock()
 frame_rate = 33
 
 # Global veriables
-screen_id = "intro"
-watch_screen = "intro"
+screen_id = "village" # While Debugging
+watch_screen = "village" # While Debugging
 previous_store_screen = ""
 running = False
 action = 0 
@@ -79,7 +80,7 @@ flags = {"hero_saw_bandits": False,
          "bandits_near_tavern": True, 
          "troll": False,
          "inventory_open": False,
-         "you_know_where_jacob_live": False,
+         "you_know_where_jacob_live": True, # While Debugging
          "beer": False,
          "conversation_done": False,
          "path_to_shadow_peaks": False,
@@ -190,7 +191,8 @@ inventory = [{"name": "Metal sword", "status": ["equipped", "weapon"], "stats":{
              {"name": "Bastion Sword", "status": ["equip", "weapon"], "stats": {"type_of_weapon": "sword", "damage": 20}},
              {"name": "Heal Potion", "status": ("counted", "potion"), "count": 2},
              {"name": "Mana Potion", "status": ("counted", "potion"), "count": 2},
-             {"name": "Pork", "status": ("counted", "meat"), "count": 4}]
+             {"name": "Pork", "status": ("counted", "meat"), "count": 4},
+             {"name": "Magic flute", "status": ("tools", "tool")}]
 
 
 # NOTE: for testing ["FireBall", {"effect": "fire", "damage": 30, "mana_cost": 60}]
@@ -216,7 +218,7 @@ forest_events = ["villagers", "bear", "herbs", "boar",
 forest_events_weights = [10, 10, numbered_forest_events["herbs"] * 3, 
                          numbered_forest_events["boar"] * 3,
                          numbered_forest_events["travelers"] * 10, 
-                         numbered_forest_events["wolves"] * 4, 1, 15, 5, 0]
+                         numbered_forest_events["wolves"] * 400, 1, 15, 5, 0]
 
 # Explore events bear lair
 
@@ -567,6 +569,8 @@ def showSpells():
         text += spell["name"] + " \\p\n"
     
     renderTextAt(text, inventory_font, (0, 0, 0), 690, 320, screen, 800)
+    renderTextAt("Spells ' S '", inventory_font, (0, 0, 0), 690, 490, screen, 800)
+    
 
 def check_mana_health_gold(screen_id):
 
@@ -723,7 +727,7 @@ def showScreen(screen, screen_font, options_font, tip_text):
             i += 1
         
         renderTextAt(watch_screen["text"], screen_font, (0, 0, 0), 30, 115, screen, 850)
-        renderTextAt(options_text, options_font, (0, 0, 0), 30, 370, screen, 500)
+        renderTextAt(options_text, options_font, (0, 0, 0), 30, 370, screen, 480)
         renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
 
 

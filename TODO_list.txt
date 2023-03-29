@@ -14,8 +14,4 @@
 
 7. TODO: Addd background music dependent to screen.
 
-8. TODO: Correct a print out of damage (remove decemal point)
-
-9. TODO: Correct option_text out in inside_jacob_house
-
-10. TODO: Add "Magic Flue" action for forest event Wolves
+8. TODO: Show armor status items

@@ -585,7 +585,7 @@ def forest(flags, screens, screen_id, action, inventory,
 
 def stone(screen_id, action, forest_events, forest_events_weights, state):
     if action == 1:
-        if(check_if_object_in_array("bear", forest_events):
+        if(check_if_object_in_array("bear", forest_events)):
             index = find_object_index_array("bear", forest_events)
             del forest_events[index]
             del forest_events_weights[index]
@@ -794,6 +794,16 @@ def wolves_func(screens, screen_id, action, flags, state, inventory):
         for index in indexes:
             screens["wolves"]["options"].append(("Throw " + inventory[index]["name"] + " to the wolves.", "throw_meat"))
 
+    if(check_if_item_in_inventory("Magic flute", inventory) and not \
+        check_if_option_in_screen("use_magic_wolves", screens["wolves"]["options"]) and state["mana"] >= 20):
+        
+        screens["wolves"]["options"].append(("Use a \"Magic flute\" [20 mana]", "use_magic_wolves"))
+    
+    elif((check_if_option_in_screen("use_magic_wolves", screens["wolves"]["options"]) and state["mana"] < 20) or \
+        not check_if_item_in_inventory("Magic flute", inventory)):
+
+        del_option("use_magic_wolves", screens["wolves"]["options"])
+
     if action == 1:
         flags["fight_wolves"] = True
     elif action == 2:
@@ -805,8 +815,9 @@ def wolves_func(screens, screen_id, action, flags, state, inventory):
                 " the wolves quickly catch up with you. They leap onto your back and bring you to the ground." \
                 " \\p\n-40 health"
             state["health"] -= 40
-    # elif action == 3 and inventory["f"]:
-    #     state["mana"] -= 20
+    elif action == 3 and check_if_option_in_screen("use_magic_wolves", screens["wolves"]["options"]):
+        state["mana"] -= 20
+
     elif action != 0 and action <= len(screens["wolves"]["options"]) and \
         screens["wolves"]["options"][action - 1][1] == "throw_meat":
         item_index = 0

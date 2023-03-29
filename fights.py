@@ -218,15 +218,15 @@ def attack_enemy_weapon(enemy, parameters, events):
     
     # Check if enemy dead and calculate enemy stats
     if roll() > enemy["weapon_miss_chance"]:
-        enemy["health"] -= round(damage, 0)
+        enemy["health"] -= int(round(damage, 0))
         if enemy["health"] <= 0:
-            parameters["screens"]["loot"]["text"] = "You have dealt " + str(round(damage, 0)) + " damage.  \\p\n" \
+            parameters["screens"]["loot"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage.  \\p\n" \
                                         + enemy["name"] + " is dead. \\p\n"
             loot_func = enemy["loot"]
             parameters["screen_id"], parameters["action"], parameters["location_to_move"], events = \
                             loot_func(enemy, parameters, events)
         else:
-            parameters["screens"]["evade"]["text"] = "You have dealt " + str(round(damage, 0)) + " damage. " \
+            parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage. " \
                                         + enemy["name"] + " \\p\n"
     else:
         parameters["screens"]["evade"]["text"] = "You have missed. \\p\n"
@@ -252,16 +252,16 @@ def attack_enemy_spell(enemy, spells, parameters, events):
         if check_mana(mana_cost, parameters["state"]):
             parameters["state"]["mana"] -= mana_cost
             if roll() > enemy["spell_miss_chance"]:
-                enemy["health"] -= round(damage, 0)
+                enemy["health"] -= int(round(damage, 0))
                 if enemy["health"] <= 0:
-                    parameters["screens"]["loot"]["text"] = "You have dealt " + str(round(damage, 0)) + \
+                    parameters["screens"]["loot"]["text"] = "You have dealt " + str(int(round(damage, 0))) + \
                             " damage with "+ spell["name"] + " . \\p\n " + enemy["name"] + " is dead. \\p\n"
 
                     loot_func = enemy["loot"]
                     parameters["screen_id"], parameters["action"], parameters["location_to_move"], events = \
                         loot_func(enemy, parameters, events)
                 else:
-                    parameters["screens"]["evade"]["text"] = "You have dealt " + str(round(damage, 0)) + \
+                    parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + \
                                                 " damage with "+ spell["name"] + " to " + enemy["name"] + " \\p\n"
             else:
                 parameters["screens"]["evade"]["text"] = "You have missed."
@@ -280,44 +280,44 @@ def evade_enemy(enemy, parameters):
             parameters["screens"]["attack"]["text"] = " You have succeed. " + enemy["name"] + " \\p\n"
             parameters["screen_id"] = "attack"
         else:
-            parameters["state"]["health"] -= round(enemy_damage,)
+            parameters["state"]["health"] -= int(round(enemy_damage, 0))
             parameters["screens"]["attack"]["text"] = " You did not succeed. " + enemy["name"] +  " deal "  + \
-                                                str(round(enemy_damage, 0)) + \
+                                                str(int(round(enemy_damage, 0))) + \
                                                 " damage to you " " \\p\n"
 
     elif parameters["action"] == 2:
         if roll() < enemy["parry"]:
             if enemy["parry_damage"] < 1:
                 enemy_damage *= enemy["parry_damage"]
-                parameters["state"]["health"] -= round(enemy_damage, 0) 
+                parameters["state"]["health"] -= int(round(enemy_damage, 0))
                 parameters["screens"]["attack"]["text"] = "You block the attack, but " \
-                    + enemy["name"] + " delt you " + str(round(enemy_damage, 0)) + " damage."
+                    + enemy["name"] + " delt you " + str(int(round(enemy_damage, 0))) + " damage."
                 parameters["screen_id"] = "attack"
             else:
                 parameters["screens"]["attack"]["text"] = "You block the attack"
                 parameters["screen_id"] = "attack"
         else:
-            parameters["state"]["health"] -= round(enemy_damage, 0)
+            parameters["state"]["health"] -= int(round(enemy_damage, 0))
             parameters["screens"]["attack"]["text"] = " You try to block but " + enemy["name"] + " deal " + \
-                                            str(round(enemy_damage, 0)) + " damage to you "  " \\p\n"
+                                            str(int(round(enemy_damage, 0))) + " damage to you "  " \\p\n"
     elif parameters["action"] == 3:
         if check_mana(10, parameters["state"]):
             parameters["state"]["mana"] -= 10
             if roll() < enemy["magic_shield"]:
                 if enemy["magic_shield_damage"] < 1:
                     enemy_damage *= enemy["magic_shield_damage"]
-                    parameters["state"]["health"] -= round(enemy_damage, 0) 
+                    parameters["state"]["health"] -= int(round(enemy_damage, 0))
                     parameters["screens"]["attack"]["text"] = "You block the attack, but " \
-                        + enemy["name"] + " delt you " + str(round(enemy_damage, 0)) + " damage."
+                        + enemy["name"] + " delt you " + str(int(round(enemy_damage, 0))) + " damage."
                     parameters["screen_id"] = "attack"
                 else:
                     parameters["screens"]["attack"]["text"] = " You blocked the attack" \
                                                                     " with magic shield. "
                     parameters["screen_id"] = "attack"
             else:
-                parameters["state"]["health"] -= round(enemy_damage, 0)
+                parameters["state"]["health"] -= int(round(enemy_damage, 0))
                 parameters["screens"]["attack"]["text"] = " You did not succeed. " + \
-                    enemy["name"] + " deal " + str(round(enemy_damage, 0)) + " damage to you "  " \\p\n"
+                    enemy["name"] + " deal " + str(int(round(enemy_damage, 0))) + " damage to you "  " \\p\n"
         else:
             parameters["screens"]["evade"]["text"] = "You have not enough mana"
             parameters["screen_id"] = "evade"
@@ -341,11 +341,11 @@ def attack_enemy_in_multiple_fight_weapon(index, enemes, enemes_counter, choose_
     
     # Check if enemes[index - 1] dead and calculate enemes[index - 1] stats
     if roll() > enemes[index - 1]["weapon_miss_chance"]:
-        enemes[index - 1]["health"] -= round(damage, 0)
+        enemes[index - 1]["health"] -= int(round(damage, 0))
         if enemes[index - 1]["health"] <= 0:
-            parameters["screens"]["evade"]["text"] = "You have dealt " + str(round(damage, 0)) + " damage.  \\p\n" \
+            parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage.  \\p\n" \
                                         + enemes[index - 1]["name"] + " is dead. \\p\n"
-            parameters["screens"]["loot"]["text"] = "You have dealt " + str(round(damage, 0)) + " damage.  \\p\n" \
+            parameters["screens"]["loot"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage.  \\p\n" \
                                         + enemes[index - 1]["name"] + " is dead. \\p\n"
             
             enemes_counter, parameters["screen_id"], parameters["action"], parameters["location_to_move"], events = \
@@ -354,7 +354,7 @@ def attack_enemy_in_multiple_fight_weapon(index, enemes, enemes_counter, choose_
             del parameters["screens"][choose_screen]["options"][index - 1]
             
         else:
-            parameters["screens"]["evade"]["text"] = "You have dealt " + str(round(damage, 0)) + " damage. " \
+            parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage. " \
                                         + enemes[index - 1]["name"] + " \\p\n"
     else:
         parameters["screens"]["evade"]["text"] = "You have missed. \\p\n"
@@ -391,11 +391,11 @@ def attack_enemy_in_multiple_fight_spell(index, enemes, enemes_counter, choose_s
         if check_mana(mana_cost, parameters["state"]):
             parameters["state"]["mana"] -= mana_cost
             if roll() > enemes[index - 1]["spell_miss_chance"]:
-                enemes[index - 1]["health"] -= round(damage, 0)
+                enemes[index - 1]["health"] -= int(round(damage, 0))
                 if enemes[index - 1]["health"] <= 0:
-                    parameters["screens"]["loot"]["text"] = "You have dealt " + str(round(damage, 0)) + \
+                    parameters["screens"]["loot"]["text"] = "You have dealt " + str(int(round(damage, 0))) + \
                             " damage with "+ spell["name"] + " . \\p\n " + enemes[index - 1]["name"] + " is dead. \\p\n"
-                    parameters["screens"]["evade"]["text"] = "You have dealt " + str(round(damage, 0)) + \
+                    parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + \
                             " damage with "+ spell["name"] + " . \\p\n " + enemes[index - 1]["name"] + " is dead. \\p\n"
                     
                     enemes_counter, parameters["screen_id"], parameters["action"], parameters["location_to_move"], events = \
@@ -403,7 +403,7 @@ def attack_enemy_in_multiple_fight_spell(index, enemes, enemes_counter, choose_s
                     del enemes[index - 1]
                     del parameters["screens"][choose_screen]["options"][index - 1]
                 else:
-                    parameters["screens"]["evade"]["text"] = "You have dealt " + str(round(damage, 0)) + \
+                    parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + \
                                                 " damage with "+ spell["name"] + " to " + enemes[index - 1]["name"] + " \\p\n"
             else:
                 parameters["screens"]["evade"]["text"] = "You have missed."
@@ -438,26 +438,26 @@ def evade_enemes(enemes, enemes_counter, choose_screen, parameters):
             parameters["screens"][fight_screen]["text"] += " You have succeed. " + enemes[enemes_counter - 1]["name"] + " \\p\n"
             parameters["screens"]["evade"]["text"] += "You try to evade " + enemes[enemes_counter - 1]["name"] + " \\p\n"
         else:
-            parameters["state"]["health"] -= round(enemy_damage,)
+            parameters["state"]["health"] -= int(round(enemy_damage, 0))
             parameters["screens"][fight_screen]["text"] += " You did not succeed. " + enemes[enemes_counter - 1]["name"] +  " deal "  + \
-                                                str(round(enemy_damage, 0)) + " damage to you \\p\n"
+                                                str(int(round(enemy_damage, 0))) + " damage to you \\p\n"
             parameters["screens"]["evade"]["text"] += "You try to evade " + enemes[enemes_counter - 1]["name"] + " \\p\n"
 
     elif parameters["action"] == 2:
         if roll() < enemes[enemes_counter - 1]["parry"]:
             if enemes[enemes_counter - 1]["parry_damage"] < 1:
                 enemy_damage *= enemes[enemes_counter - 1]["parry_damage"]
-                parameters["state"]["health"] -= round(enemy_damage, 0) 
+                parameters["state"]["health"] -= int(round(enemy_damage, 0)) 
                 parameters["screens"][fight_screen]["text"] += "You parry the attack, but " \
-                    + enemes[enemes_counter - 1]["name"] + " delt you " + str(round(enemy_damage, 0)) + " damage. \\p\n"
+                    + enemes[enemes_counter - 1]["name"] + " delt you " + str(int(round(enemy_damage, 0))) + " damage. \\p\n"
                 parameters["screens"]["evade"]["text"] += "You try to parry " + enemes[enemes_counter - 1]["name"] + " \\p\n"
             else:
                 parameters["screens"]["evade"]["text"] += "You try to parry " + enemes[enemes_counter - 1]["name"] + " \\p\n"
                 parameters["screens"][fight_screen]["text"] += "You parry the attack \\p\n"
         else:
-            parameters["state"]["health"] -= round(enemy_damage, 0)
+            parameters["state"]["health"] -= int(round(enemy_damage, 0))
             parameters["screens"][fight_screen]["text"] += " You try to block but " + enemes[enemes_counter - 1]["name"] + " deal " + \
-                                            str(round(enemy_damage, 0)) + " damage to you \\p\n"
+                                            str(int(round(enemy_damage, 0))) + " damage to you \\p\n"
             parameters["screens"]["evade"]["text"] += "You try to evade " + enemes[enemes_counter - 1]["name"] + " \\p\n"
     
     elif parameters["action"] == 3:
@@ -466,18 +466,18 @@ def evade_enemes(enemes, enemes_counter, choose_screen, parameters):
             if roll() < enemes[enemes_counter - 1]["magic_shield"]:
                 if enemes[enemes_counter - 1]["magic_shield_damage"] < 1:
                     enemy_damage *= enemes[enemes_counter - 1]["magic_shield_damage"]
-                    parameters["state"]["health"] -= round(enemy_damage, 0) 
+                    parameters["state"]["health"] -= int(round(enemy_damage, 0)) 
                     parameters["screens"][fight_screen]["text"] += "You block the attack, but " \
-                        + enemes[enemes_counter - 1]["name"] + " delt you " + str(round(enemy_damage, 0)) + " damage. \\p\n"
+                        + enemes[enemes_counter - 1]["name"] + " delt you " + str(int(round(enemy_damage, 0))) + " damage. \\p\n"
                     parameters["screens"]["evade"]["text"] += "You try to block " + enemes[enemes_counter - 1]["name"] + " \\p\n"
                 else:
                     parameters["screens"]["evade"]["text"] += "You try to block " + enemes[enemes_counter - 1]["name"] + " \\p\n"
                     parameters["screens"][fight_screen]["text"] += " You blocked the attack" \
                                                                     " with magic shield.  \\p\n"
             else:
-                parameters["state"]["health"] -= round(enemy_damage, 0)
+                parameters["state"]["health"] -= int(round(enemy_damage, 0))
                 parameters["screens"][fight_screen]["text"] += " You did not succeed. " + \
-                    enemes[enemes_counter - 1]["name"] + " deal " + str(round(enemy_damage, 0)) + " damage to you "  " \\p\n"
+                    enemes[enemes_counter - 1]["name"] + " deal " + str(int(round(enemy_damage, 0))) + " damage to you "  " \\p\n"
                 parameters["screens"]["evade"]["text"] += "You try to block " + enemes[enemes_counter - 1]["name"] + " \\p\n"
         else:
             parameters["screens"]["evade"]["text"] = "You have not enough mana \\p\n"
