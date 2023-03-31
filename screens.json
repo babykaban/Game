@@ -6,13 +6,14 @@
                           ["Go to the Drunken Dragon tavern", "tavern"]]},
     "move": {"text": "Choose location to move",
              "options": []},
+    
     "inventory": {"text": "Weapon and items you can use:",
                   "options": [],
                   "function": "inventory_screen"},
     
-    "current_spells": {"text": "",
+    "current_spells": {"text": "Your current spells: ",
                        "options": [],
-                       "function": "spells_screen"},
+                       "function": "current_spells_screen"},
     
     
     "village": {"text": "You walk into the village on a sunny morning and observe the bustle of activity around you. You see a man sitting on a bench, looking sad and lost in thought. A  group of women are chattering near the well, while in the distance you can see the towering spire of a church.",

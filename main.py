@@ -40,8 +40,8 @@ clock = pygame.time.Clock()
 frame_rate = 33
 
 # Global veriables
-screen_id = "village" # While Debugging
-watch_screen = "village" # While Debugging
+screen_id = "tavern" # While Debugging
+watch_screen = "tavern" # While Debugging
 previous_store_screen = ""
 running = False
 action = 0 
@@ -80,6 +80,7 @@ flags = {"hero_saw_bandits": False,
          "bandits_near_tavern": True, 
          "troll": False,
          "inventory_open": False,
+         "spell_book_open": False,
          "you_know_where_jacob_live": True, # While Debugging
          "beer": False,
          "conversation_done": False,
@@ -166,6 +167,9 @@ items_sell_prices = [{"item": "Heal Potion", "sell_price": 5},
                      {"item": "", "sell_price": 0}]
 
 
+items_description = {"Arcane Misile": "awfagsgagag safwafasafaw"}
+
+
 # Player state, inventory, spells, store
 
 # {"name": "Bastion Sword", "status": "equip", "stats": {"type_of_weapon": "sword", "damage": 20}}
@@ -233,6 +237,14 @@ def inventory_screen():
         else:
             del_all_options(screens["inventory"]["options"])
             add_inventory_in_screen()        
+
+def current_spells_screen():
+    if flags["spell_book_open"]:
+        if len(screens["current_spells"]["options"]) == 0:
+            add_spells_to_screen(screens["current_spells"])
+        else:
+            del_all_options(screens["current_spells"]["options"])
+            add_spells_to_screen(screens["current_spells"])
 
 # =========================================================== FIGHT_FUNCTIONS ======================================== #
 def choose_guard():
@@ -310,17 +322,22 @@ def choose_bandit():
         else:
             enemy = 0
 
-def add_spells_to_screen():
+def add_spells_to_screen(screen_to_add):
     global spells
-    if len(screens["spells"]["options"]) != 0:
-        del_all_options(screens["spells"]["options"])
+
+    next_screen = ""
+    if screen_id == "current_spells":
+        next_screen = ""
+    else:
+        next_screen = "evade"
+
+    if len(screen_to_add["options"]) != 0:
+        del_all_options(screen_to_add["options"])
         for spell in spells:
-            screens["spells"]["options"].append((spell["name"], "evade"))
+            screen_to_add["options"].append((spell["name"], next_screen))
     else:
         for spell in spells:
-            screens["spells"]["options"].append((spell["name"], "evade"))
-    
-    screens["spells"]["options"].append(("Back", ""))
+            screen_to_add["options"].append((spell["name"], next_screen))
 
 def attack_and_spell():
     global action
@@ -345,7 +362,7 @@ def attack_and_spell():
               "swamp_events": {"events": swamp_events, 
                                "weights": swamps_events_weights}}
 
-    add_spells_to_screen()
+    add_spells_to_screen(screens["spells"])
     if action != 0 and action <= len(screens["spells"]["options"]):
         if flags["hero_saw_bandits"] and flags["bandits_near_tavern"]:
             if screen_id == "spells":
@@ -640,6 +657,10 @@ def add_inventory_in_screen():
         pass
     
 
+def showingDescriptionForItemsAndSpells(index, items):
+    item = items[index]
+    text = items_description[item["name"]]
+    renderTextAt(text, screen_font, (0, 0, 0), 380, 115, screen, 200)
 
 def processingInventoryEvents(index):
     item = inventory[index]    
@@ -685,6 +706,18 @@ def showScreen(screen, screen_font, options_font, tip_text):
         renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
 
         drawArrow(arrow_image, 40, 150, option_index, text_height)
+    
+    elif screen_id == "current_spells":
+        options_text = ""
+        for opt in watch_screen["options"]:
+            options_text += "{} \p ".format(opt[0])
+
+        background = pygame.image.load("images//spells_image.png")
+        renderTextAt(watch_screen["text"], screen_font, (0, 0, 0), 40, 115, screen, 850)
+        renderTextAt(options_text, options_font, (0, 0, 0), 80, 150, screen, 450)
+        renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
+
+        drawArrow(arrow_image, 40, 150, option_index, text_height)
 
     elif screen_id == "sell" or screen_id == "buy" or screen_id == "offer_troll":
         options_text = ""
@@ -697,6 +730,18 @@ def showScreen(screen, screen_font, options_font, tip_text):
         renderTextAt(watch_screen["text"], screen_font, (0, 0, 0), 40, 115, screen, 850)
         renderTextAt(options_text, options_font, (0, 0, 0), 40, 150, screen, 450)
         renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
+    elif screen_id == "sell" or screen_id == "buy" or screen_id == "offer_troll":
+        options_text = ""
+        i = 1
+        for opt in watch_screen["options"]:
+            options_text += "{} . {} \p ".format(i, opt[0])
+            i += 1
+
+        background = pygame.image.load("images//store.png")
+        renderTextAt(watch_screen["text"], screen_font, (0, 0, 0), 40, 115, screen, 850)
+        renderTextAt(options_text, options_font, (0, 0, 0), 40, 150, screen, 450)
+        renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
+    
     elif screen_id == "spells":
         options_text = ""
         i = 1
@@ -929,6 +974,10 @@ def processingEvents():
             func = eval(screens[screen_id]["function"])
             func()
         
+        elif screen_id == "current_spells":
+            func = eval(screens[screen_id]["function"])
+            func()
+        
         elif screen_id == "church":
             func = eval(screens[screen_id]["function"]) 
             func(screens, flags, state, action, pay_for_rest)
@@ -1073,6 +1122,10 @@ while global_running:
                 screen_id = inventory_location
                 flags["inventory_open"] = False
             
+            elif event.key == pygame.K_ESCAPE and running and flags["spell_book_open"]:
+                screen_id = inventory_location
+                flags["spell_book_open"] = False
+            
             elif event.key == pygame.K_ESCAPE and running and (screen_id == "buy" or screen_id == "sell"):
                 screen_id = previous_store_screen
             
@@ -1120,19 +1173,30 @@ while global_running:
                 screen_id = "forest"
             elif event.key == pygame.K_m and running and screen_id == "shadow_peaks_path":
                 screen_id = "forest"
-            elif event.key == pygame.K_i and running and screen_id != "inventory"\
+            elif event.key == pygame.K_i and running and screen_id != "inventory" and screen_id != "current_spells"\
                         and screen_id != "sell" and screen_id != "buy":
                 inventory_location = screen_id
                 screen_id = "inventory"
                 tip_text = "To close an inventory press ' Esc '" 
                 flags["inventory_open"] = True
+            elif event.key == pygame.K_s and running and screen_id != "current_spells" and screen_id != "inventory"\
+                        and screen_id != "sell" and screen_id != "buy":
+                inventory_location = screen_id
+                screen_id = "current_spells"
+                tip_text = "To close an spellbook press ' Esc '" 
+                flags["spell_book_open"] = True
+            
             elif event.key == pygame.K_UP and running:
                 if(option_index > 0):
                     option_index -= 1
                 print("up " + str(option_index) + "\n")   
+            
             elif event.key == pygame.K_DOWN and running:
-                if(option_index < len(inventory) - 1):
+                if(option_index < len(inventory) - 1) and flags["inventory_open"]:
                     option_index += 1 
+                if(option_index < len(spells) - 1) and flags["spell_book_open"]:
+                    option_index += 1 
+                
                 print("down " + str(option_index) + "\n")   
 
     if running:
@@ -1160,6 +1224,10 @@ while global_running:
         showHealth()
         showInventory() 
         showSpells()
+        if flags["inventory_open"]:
+            showingDescriptionForItemsAndSpells(option_index, inventory)
+        elif flags["spell_book_open"]:
+            showingDescriptionForItemsAndSpells(option_index, spells)
     else:
         screen.blit(background, (0, 0))
 

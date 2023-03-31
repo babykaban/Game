@@ -1,7 +1,6 @@
 1. TODO: TEST EACH LOCATION IN GAME THOSE ARE CREATED!!!
 
-2. TODO: Create a explanation icon for each item in inventory,
-    when player choose an item with an arrow.
+2. TODO: Complete a item_descriptions dictionary
 
 3. TODO: Create a functions for each death that can heppend.
 
