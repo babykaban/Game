@@ -415,10 +415,10 @@ def add_store_sell_in_screen(screens, inventory):
                 screens["sell"]["options"].append((item["name"], "sell"))
 
 
-def processingStoreEvents(screen_id, screens, state, inventory, spells, store, items_sell_prices, action):
-    if screen_id == "buy" and action != 0 and action <= len(screens["buy"]["options"]):
-        if screens["buy"]["options"][action - 1][0] in screens["buy"]["options"][action - 1]:
-            item = store[action - 1]
+def processingStoreEvents(screen_id, screens, state, inventory, spells, store, items_sell_prices, index):
+    if(len(screens["buy"]["options"]) != 0):
+        if screens["buy"]["options"][index][0] in screens["buy"]["options"][index]:
+            item = store[index]
             
             if item["type"][0] == "counted":
                 if state["gold"] >= item["price"] and check_if_item_in_inventory(item["name"], inventory):
@@ -438,7 +438,7 @@ def processingStoreEvents(screen_id, screens, state, inventory, spells, store, i
             elif item["type"][0] == "weapon":
                 if state["gold"] >= item["price"]:
                     inventory.append({"name": item["name"], "status": ["equip", "weapon"], 
-                                      "stats": {"type_of_weapon": item["stats"]["type"], "damage": item["stats"]["damage"]}})
+                                        "stats": {"type_of_weapon": item["stats"]["type"], "damage": item["stats"]["damage"]}})
                     del store[find_item_idex_store(item["name"], store)]
                     action = 0
                     state["gold"] -= item["price"]
@@ -446,59 +446,57 @@ def processingStoreEvents(screen_id, screens, state, inventory, spells, store, i
             elif item["type"][0] == "spell":
                 if state["gold"] >= item["price"]:
                     spells.append({"name": item["name"], "stats": {"effect": item["stats"]["effect"], 
-                                             "damage": item["stats"]["damage"], 
-                                             "mana_cost": item["stats"]["mana_cost"]}})
+                                                "damage": item["stats"]["damage"], 
+                                                "mana_cost": item["stats"]["mana_cost"]}})
                     del store[find_item_idex_store(item["name"], store)]
                     action = 0
                     state["gold"] -= item["price"]
-           
+            
             elif item["type"][0] == "armor":
                 if state["gold"] >= item["price"]:
                     inventory.append({"name": item["name"], "status": item["type"], "stats": item["stats"]})
                     del store[find_item_idex_store(item["name"], store)]
                     action = 0
                     state["gold"] -= item["price"]
-
-    elif screen_id == "sell" and action != 0 and action <= len(screens["sell"]["options"]):
-        if screens["sell"]["options"][action - 1][0] in screens["sell"]["options"][action - 1]:
+    elif(len(screens["sell"]["options"]) != 0):
+        if screens["sell"]["options"][index][0] in screens["sell"]["options"][index]:
             
-            item_index = find_item_index_inventory(screens["sell"]["options"][action - 1][0], inventory)
+            item_index = find_item_index_inventory(screens["sell"]["options"][index][0], inventory)
             sell_price = items_sell_prices[find_index_in_sell_prices(inventory[item_index]["name"], items_sell_prices)]["sell_price"]
 
-            if inventory[item_index]["status"][0] == "counted" and action != 0:
+            if inventory[item_index]["status"][0] == "counted":
                 inventory[item_index]["count"] -= 1
                 if inventory[item_index]["count"] == 0:
                     del inventory[item_index]
                 state["gold"] += sell_price
-                action = 0
+            
             elif inventory[item_index]["status"][0] == "equip":
                 del inventory[item_index]
                 state["gold"] += sell_price
-                action = 0
+            
             elif inventory[item_index]["status"][0] == "item":
                 del inventory[item_index]
                 state["gold"] += sell_price
-                action = 0
-                
+                    
 
 def buy_and_sell(screen_id, screens, state, inventory, spells, store, items_sell_prices, action):
     if screen_id == "buy":
         if len(screens["buy"]["options"]) == 0:
             add_store_buy_in_screen(screens, store)
         else:
-            processingStoreEvents(screen_id, screens, state, inventory, spells, store, items_sell_prices, action)
             del_all_options(screens["buy"]["options"])
             add_store_buy_in_screen(screens, store)
+    
     elif screen_id == "sell":
         if len(screens["sell"]["options"]) == 0:
             add_store_sell_in_screen(screens, inventory)
         else:
-            processingStoreEvents(screen_id, screens, state, inventory, spells, store, items_sell_prices, action)
             del_all_options(screens["sell"]["options"])
             add_store_sell_in_screen(screens, inventory)
     
     action = 0
-    return action
+    
+    return action, store
 
 def store_screen(screens, previous_store_screen):
     if len(screens["move"]["options"]) == 0:

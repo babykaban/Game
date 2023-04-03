@@ -24,7 +24,9 @@ font_size_options_screens = 22
 font_size_health_spells = 20
 font_size_inventory = 16
 tip_text = ""
+
 option_index = 0
+current_store = 0
 
 screen_font = pygame.font.Font(font_name_options_screens, font_size_options_screens)
 options_font = pygame.font.Font(font_name_options_screens, font_size_options_screens)
@@ -40,8 +42,8 @@ clock = pygame.time.Clock()
 frame_rate = 33
 
 # Global veriables
-screen_id = "tavern" # While Debugging
-watch_screen = "tavern" # While Debugging
+screen_id = "store" # While Debugging
+watch_screen = "store" # While Debugging
 previous_store_screen = ""
 running = False
 action = 0 
@@ -94,7 +96,10 @@ flags = {"hero_saw_bandits": False,
          "bear_lair": False,
          "fight_bear": False,
          "berries": False,
-         "fight_wolves": False} 
+         "fight_wolves": False,
+         "buy_merchant_open": False,
+         "buy_store_open": False,
+         "sell_open": False} 
 
 # NOTE: for testing["Bastion Sword", "equip", {"type_of_weapon": "sword", "damage": 20}]
 """
@@ -167,7 +172,22 @@ items_sell_prices = [{"item": "Heal Potion", "sell_price": 5},
                      {"item": "", "sell_price": 0}]
 
 
-items_description = {"Arcane Misile": "awfagsgagag safwafasafaw"}
+spells_description = {"Arcane Misile": "Manacost: 10 \\p Damage: 15 \\p Effect: None",
+                      "FireBall": "Manacost: 60 \\p Damage: 30 \\p Effect: Fire",
+                      "FrostBall": "Manacost: 40 \\p Damage: 25 \\p Effect: Ice",
+                      "Lighting Bolt": "Manacost: 35 \\p Damage: 20 \\p Effect: Light",
+                      "Water splash": "Manacost: 15 \\p Damage: 10 \\p Effect: Water"
+                     }
+
+weapons_description = {"Metal sword": "Damage: 10 \\p",
+                       "Bastard sword": "Damage: 30 \\p",
+                       "Rusty sword": "Damage: 5 \\p",
+                       "Fine sword": "Damage: 15 \\p",
+                       "Long sword": "Damage: 25 \\p",
+                       "Bastion Sword": "Damage: 20 \\p",
+                       "Axe's Axe": "Damage: 20 \\ p",
+                       "Rusty dagger": "Damage: 8 \\p"
+                      }
 
 
 # Player state, inventory, spells, store
@@ -222,7 +242,7 @@ forest_events = ["villagers", "bear", "herbs", "boar",
 forest_events_weights = [10, 10, numbered_forest_events["herbs"] * 3, 
                          numbered_forest_events["boar"] * 3,
                          numbered_forest_events["travelers"] * 10, 
-                         numbered_forest_events["wolves"] * 400, 1, 15, 5, 0]
+                         numbered_forest_events["wolves"] * 4, 1, 1500, 5, 0]
 
 # Explore events bear lair
 
@@ -632,6 +652,8 @@ def showInventory():
                 text += item["name"] + " " + str(item["count"]) + " \\p\n"
             elif item["status"][0] == "tools":
                 text += item["name"] + " \\p\n"
+            elif item["status"][0] == "armor":
+                text += item["name"] + " \\p\n"
 
         renderTextAt(text, inventory_font, (0, 0, 0), 865, 320, screen, 800)
     else:
@@ -651,7 +673,7 @@ def add_inventory_in_screen():
                 elif item["status"][0] == "equip":
                     screens["inventory"]["options"].append((item["name"], "inventory"))
        
-                elif item["status"][0] == "items" or item["status"][0] == "tools":
+                elif item["status"][0] == "items" or item["status"][0] == "tools" or item["status"][0] == "armor":
                     screens["inventory"]["options"].append((item["name"], "inventory"))
     else:
         pass
@@ -659,7 +681,18 @@ def add_inventory_in_screen():
 
 def showingDescriptionForItemsAndSpells(index, items):
     item = items[index]
-    text = items_description[item["name"]]
+    text = ""
+    if(flags["inventory_open"]):
+        if(item["status"][1] == "weapon"):
+            text = weapons_description[item["name"]]
+        elif(item["status"][0] == "counted"):
+            pass
+        elif(item["status"][0] == "tools"):
+            pass
+        elif(item["status"][0] == "armor"):
+            pass
+    else:
+        text = spells_description[item["name"]]
     renderTextAt(text, screen_font, (0, 0, 0), 380, 115, screen, 200)
 
 def processingInventoryEvents(index):
@@ -721,15 +754,16 @@ def showScreen(screen, screen_font, options_font, tip_text):
 
     elif screen_id == "sell" or screen_id == "buy" or screen_id == "offer_troll":
         options_text = ""
-        i = 1
         for opt in watch_screen["options"]:
-            options_text += "{} . {} \p ".format(i, opt[0])
-            i += 1
+            options_text += "{} \p ".format(opt[0])
 
         background = pygame.image.load("images//store.png")
         renderTextAt(watch_screen["text"], screen_font, (0, 0, 0), 40, 115, screen, 850)
-        renderTextAt(options_text, options_font, (0, 0, 0), 40, 150, screen, 450)
+        renderTextAt(options_text, options_font, (0, 0, 0), 80, 150, screen, 450)
         renderTextAt(tip_text, screen_font, (0, 0, 0), 685, 5, screen, 850)
+    
+        drawArrow(arrow_image, 40, 150, option_index, text_height)
+
     elif screen_id == "sell" or screen_id == "buy" or screen_id == "offer_troll":
         options_text = ""
         i = 1
@@ -910,13 +944,23 @@ def processingEvents():
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screen_id, action, forest_events, forest_events_weights, state)
 
+####### TODO: FIX BUGG!!!!!!
         elif screen_id == "buy" or screen_id == "sell":
             if previous_store_screen == "store":
+                if screen_id == "buy":
+                    flags["buy_store_open"] = True
+                else:
+                    flags["sell_open"] = True
                 func = eval(screens[screen_id]["function"])
-                action = func(screen_id, screens, state, inventory, spells, store, items_sell_prices, action)
+                action, current_store = func(screen_id, screens, state, inventory, spells, store, items_sell_prices, action)
+           
             elif previous_store_screen == "hunter_sells":
+                if screen_id == "buy":
+                    flags["buy_merchant_open"] = True
+                else:
+                    flags["sell_open"] = True
                 func = eval(screens[screen_id]["function"])
-                action = func(screen_id, screens, state, inventory, spells, merchant_store, items_sell_prices, action)
+                action, current_store = func(screen_id, screens, state, inventory, spells, merchant_store, items_sell_prices, action)
         
         elif screen_id == "women_jacob":
             func = eval(screens[screen_id]["function"])
@@ -1120,10 +1164,12 @@ while global_running:
             # A key was pressed
             if event.key == pygame.K_ESCAPE and running and flags["inventory_open"]:
                 screen_id = inventory_location
+                option_index = 0
                 flags["inventory_open"] = False
             
             elif event.key == pygame.K_ESCAPE and running and flags["spell_book_open"]:
                 screen_id = inventory_location
+                option_index = 0
                 flags["spell_book_open"] = False
             
             elif event.key == pygame.K_ESCAPE and running and (screen_id == "buy" or screen_id == "sell"):
@@ -1137,6 +1183,9 @@ while global_running:
             
             elif event.key == pygame.K_RETURN and running and screen_id == "inventory":
                 processingInventoryEvents(option_index)
+            
+            elif event.key == pygame.K_RETURN and running and (screen_id == "buy" or screen_id == "sell"):
+                processingStoreEvents(screen_id, screens, state, inventory, spells, current_store, items_sell_prices, option_index)
                 
             elif event.key == pygame.K_1:
                 action = 1
@@ -1173,12 +1222,14 @@ while global_running:
                 screen_id = "forest"
             elif event.key == pygame.K_m and running and screen_id == "shadow_peaks_path":
                 screen_id = "forest"
+            
             elif event.key == pygame.K_i and running and screen_id != "inventory" and screen_id != "current_spells"\
                         and screen_id != "sell" and screen_id != "buy":
                 inventory_location = screen_id
                 screen_id = "inventory"
                 tip_text = "To close an inventory press ' Esc '" 
                 flags["inventory_open"] = True
+            
             elif event.key == pygame.K_s and running and screen_id != "current_spells" and screen_id != "inventory"\
                         and screen_id != "sell" and screen_id != "buy":
                 inventory_location = screen_id
@@ -1194,9 +1245,20 @@ while global_running:
             elif event.key == pygame.K_DOWN and running:
                 if(option_index < len(inventory) - 1) and flags["inventory_open"]:
                     option_index += 1 
+                
                 if(option_index < len(spells) - 1) and flags["spell_book_open"]:
                     option_index += 1 
                 
+                if(option_index < len(store) - 1) and flags["buy_store_open"]:
+                    option_index += 1
+
+                if(option_index < len(merchant_store) - 1) and flags["buy_merchant_open"]:
+                    option_index += 1
+                
+                if(option_index < len(screens["sell"]["options"]) - 1) and flags["sell_open"]:
+                    option_index += 1
+
+
                 print("down " + str(option_index) + "\n")   
 
     if running:
