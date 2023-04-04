@@ -3,6 +3,8 @@ import pygame
 import random
 import json
 
+from pygame.constants import K_DOWN, K_u
+
 from events import *
 from fights import *
 from enemes import *
@@ -26,7 +28,6 @@ font_size_inventory = 16
 tip_text = ""
 
 option_index = 0
-current_store = 0
 
 screen_font = pygame.font.Font(font_name_options_screens, font_size_options_screens)
 options_font = pygame.font.Font(font_name_options_screens, font_size_options_screens)
@@ -139,6 +140,8 @@ merchant_store = \
      {"name": "Herbs", "price": 20, "type": ("counted", "leaves")},
      {"name": "Magic flute", "price": 150, "type": ("tools", "tool")}]
 
+current_store = store
+
 items_sell_prices = [{"item": "Heal Potion", "sell_price": 5},
                      {"item": "Mana Potion", "sell_price": 5},
                      {"item": "Metal sword", "sell_price": 10},
@@ -189,6 +192,11 @@ weapons_description = {"Metal sword": "Damage: 10 \\p",
                        "Rusty dagger": "Damage: 8 \\p"
                       }
 
+tools_and_armor_description = { "Magic flute": "Allows to charm animals",
+                      "Hunting Bow": "Chance to hunt something +30%",
+                      "Hunting knife": "Chance to hunt something +20%",
+                      "Oak staff": "+10 max_mana and +10% to magic attacks",
+                    }
 
 # Player state, inventory, spells, store
 
@@ -242,7 +250,7 @@ forest_events = ["villagers", "bear", "herbs", "boar",
 forest_events_weights = [10, 10, numbered_forest_events["herbs"] * 3, 
                          numbered_forest_events["boar"] * 3,
                          numbered_forest_events["travelers"] * 10, 
-                         numbered_forest_events["wolves"] * 4, 1, 1500, 5, 0]
+                         numbered_forest_events["wolves"] * 4, 1, 15, 5, 0]
 
 # Explore events bear lair
 
@@ -688,7 +696,7 @@ def showingDescriptionForItemsAndSpells(index, items):
         elif(item["status"][0] == "counted"):
             pass
         elif(item["status"][0] == "tools"):
-            pass
+            text = tools_and_armor_description[item["name"]]
         elif(item["status"][0] == "armor"):
             pass
     else:
@@ -821,6 +829,7 @@ def processingEvents():
     global action
     global pay_for_rest
     global previous_store_screen
+    global current_store
 
     if screen_id in screens:
         print(screen_id)
@@ -944,23 +953,24 @@ def processingEvents():
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screen_id, action, forest_events, forest_events_weights, state)
 
-####### TODO: FIX BUGG!!!!!!
         elif screen_id == "buy" or screen_id == "sell":
             if previous_store_screen == "store":
+                current_store = store
                 if screen_id == "buy":
                     flags["buy_store_open"] = True
                 else:
                     flags["sell_open"] = True
                 func = eval(screens[screen_id]["function"])
-                action, current_store = func(screen_id, screens, state, inventory, spells, store, items_sell_prices, action)
+                action = func(screen_id, screens, state, inventory, spells, store, items_sell_prices, action)
            
             elif previous_store_screen == "hunter_sells":
+                current_store = merchant_store
                 if screen_id == "buy":
                     flags["buy_merchant_open"] = True
                 else:
                     flags["sell_open"] = True
                 func = eval(screens[screen_id]["function"])
-                action, current_store = func(screen_id, screens, state, inventory, spells, merchant_store, items_sell_prices, action)
+                action = func(screen_id, screens, state, inventory, spells, merchant_store, items_sell_prices, action)
         
         elif screen_id == "women_jacob":
             func = eval(screens[screen_id]["function"])
@@ -1149,13 +1159,27 @@ def processingEvents():
                     " and instead spend your days exploring the natural wonders of the forest, living in the" \
                     " present moment and enjoying the simple pleasures of life."
                 location_of_end = ""
-        
+
+# TODO: Tester using this function
+def randomAction(w_screen, keys):
+    amount = 15
+    index = random.randint(0, amount)
+    key_down_event = pygame.event.Event(pygame.KEYDOWN, {'key': keys[index]})
+    pygame.event.post(key_down_event)
+    
+    return keys[index]
+    
+keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_m, pygame.K_i, pygame.K_s, pygame.K_UP, 
+        pygame.K_DOWN, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, 
+        pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9]
 # Main game loop
 global_running = True
 while global_running:
     if screen_id in screens:
         watch_screen = screens[screen_id]
-    
+
+    print(randomAction(watch_screen, keys))
+
     # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -1173,6 +1197,12 @@ while global_running:
                 flags["spell_book_open"] = False
             
             elif event.key == pygame.K_ESCAPE and running and (screen_id == "buy" or screen_id == "sell"):
+                if(screen_id == "buy"):
+                    flags["buy_merchant_open"] = False
+                    flags["buy_store_open"] = False
+                else:
+                    flags["sell_open"] = False
+                option_index = 0
                 screen_id = previous_store_screen
             
             elif event.key == pygame.K_ESCAPE and running and screen_id == "move":

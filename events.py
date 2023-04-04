@@ -416,8 +416,8 @@ def add_store_sell_in_screen(screens, inventory):
 
 
 def processingStoreEvents(screen_id, screens, state, inventory, spells, store, items_sell_prices, index):
-    if(len(screens["buy"]["options"]) != 0):
-        if screens["buy"]["options"][index][0] in screens["buy"]["options"][index]:
+    if(len(screens["buy"]["options"]) != 0 and len(screens["buy"]["options"]) > index and screen_id == "buy"):
+        if screens["buy"]["options"][index][0] in screens["buy"]["options"][index]: 
             item = store[index]
             
             if item["type"][0] == "counted":
@@ -458,7 +458,8 @@ def processingStoreEvents(screen_id, screens, state, inventory, spells, store, i
                     del store[find_item_idex_store(item["name"], store)]
                     action = 0
                     state["gold"] -= item["price"]
-    elif(len(screens["sell"]["options"]) != 0):
+    
+    elif(len(screens["sell"]["options"]) != 0 and len(screens["sell"]["options"]) > index and screen_id == "sell"):
         if screens["sell"]["options"][index][0] in screens["sell"]["options"][index]:
             
             item_index = find_item_index_inventory(screens["sell"]["options"][index][0], inventory)
@@ -496,7 +497,7 @@ def buy_and_sell(screen_id, screens, state, inventory, spells, store, items_sell
     
     action = 0
     
-    return action, store
+    return action
 
 def store_screen(screens, previous_store_screen):
     if len(screens["move"]["options"]) == 0:

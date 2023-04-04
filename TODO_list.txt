@@ -1,11 +1,13 @@
 1. TODO: TEST EACH LOCATION IN GAME THOSE ARE CREATED!!!
 
-2. TODO: Complete a item_descriptions dictionary for tools and counted items
+2. TODO: Complete a item_descriptions dictionary for counted items
 
 3. TODO: Create a functions for each death that can happend.
 
-4. TODO: Maybe add arrow pick to store, merchant and offer_troll???
+4. TODO: Maybe add arrow pick to offer_troll???
 
 5. TODO: Add a unic image for each screen ??
 
 6. TODO: Addd background music dependent to screen.
+
+7. TODO: Make a tester!!!
