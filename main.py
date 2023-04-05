@@ -1171,6 +1171,8 @@ def processingEvents():
                     " present moment and enjoying the simple pleasures of life."
                 location_of_end = ""
 
+# TODO: GOLDEN LOCKET BUGGG
+
 # TODO: Tester using this function
 keys_combination = []
 def randomAction(w_screen, keys):
@@ -1183,7 +1185,7 @@ def randomAction(w_screen, keys):
     return keys[index]
     
 keys = [pygame.K_ESCAPE, pygame.K_ESCAPE, pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_RETURN, pygame.K_RETURN, 
-        pygame.K_m, pygame.K_m, pygame.K_m, pygame.K_i, pygame.K_UP, pygame.K_DOWN, 
+        pygame.K_m, pygame.K_m, pygame.K_m, pygame.K_UP, pygame.K_DOWN, 
         pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
 
 inventory_keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_i, pygame.K_UP, pygame.K_DOWN,]
