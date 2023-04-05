@@ -25,8 +25,9 @@ def innkeeper_lose_30_gold(state, screens):
     del_option("innkeeper_lose_30_gold", screens["innkeeper"]["options"])
     del screens["innkeeper_lose_30_gold"]
 
+# TODO: BUGGS
 def innkeeper(action, screens, inventory, state):
-    if action != 0:
+    if action != 0 and action <= len(screens["innkeeper"]["options"]):
         if screens["innkeeper"]["options"][action - 1][0] == "Buy beer":
             if state["gold"] >= 10:
                 if check_if_item_in_inventory("Beer", inventory):

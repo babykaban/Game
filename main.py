@@ -9,6 +9,15 @@ from events import *
 from fights import *
 from enemes import *
 
+import os
+import sys
+import time
+
+def restartGame():
+    os.system('python main.py')
+    time.sleep(10)
+    exit()
+
 # Initialize Pygame
 pygame.init()
 
@@ -43,8 +52,8 @@ clock = pygame.time.Clock()
 frame_rate = 33
 
 # Global veriables
-screen_id = "store" # While Debugging
-watch_screen = "store" # While Debugging
+screen_id = "intro" # While Debugging
+watch_screen = "intro" # While Debugging
 previous_store_screen = ""
 running = False
 action = 0 
@@ -84,7 +93,7 @@ flags = {"hero_saw_bandits": False,
          "troll": False,
          "inventory_open": False,
          "spell_book_open": False,
-         "you_know_where_jacob_live": True, # While Debugging
+         "you_know_where_jacob_live": False, 
          "beer": False,
          "conversation_done": False,
          "path_to_shadow_peaks": False,
@@ -635,7 +644,8 @@ def check_mana_health_gold(screen_id):
 
 def changeScreen(action):
     global screen_id
-    if action != 0 and action <= len(watch_screen["options"]):
+    if action != 0 and action <= len(watch_screen["options"]) and screen_id != "inventory" and\
+        screen_id != "current_spells" and screen_id != "buy" and screen_id != "sell":
         screen_id = watch_screen["options"][action - 1][1]
         action = 0
     return action
@@ -879,7 +889,7 @@ def processingEvents():
             func(state, screens)
         
         if screen_id == "innkeeper_lose_30_gold":
-            func = screens["innkeeper_lose_30_gold"]["function"]
+            func = eval(screens[screen_id]["function"])
             func(state, screens)
 
         elif screen_id == "innkeeper":
@@ -980,8 +990,9 @@ def processingEvents():
             func = eval(screens[screen_id]["function"])
             func(screens)
 
+        #TODO: BUGG
         elif screen_id == "find_path" and action == 1:
-            func = eval(screens[screen_id]["function"])
+           # func = eval(screens[screen_id]["function"])
             location_of_end = "Swamps: tried to find path"
         
         elif screen_id == "swamps":
@@ -1128,7 +1139,7 @@ def processingEvents():
         elif screen_id == "GAME_OVER":
             if screen_id == "GAME_OVER" and action != 0 and action - 1 < len(screens["GAME_OVER"]["options"]):
                 if screens["GAME_OVER"]["options"][action - 1][0] == "Close Game":
-                    exit()
+                    restartGame()
             elif location_of_end == "Swamps: tried to find path":
                 type_of_death = random.randint(1, 3)
                 if type_of_death == 1:
@@ -1161,17 +1172,21 @@ def processingEvents():
                 location_of_end = ""
 
 # TODO: Tester using this function
+keys_combination = []
 def randomAction(w_screen, keys):
-    amount = 15
+    amount = len(keys) - 1
     index = random.randint(0, amount)
+    keys_combination.append(keys[index])
     key_down_event = pygame.event.Event(pygame.KEYDOWN, {'key': keys[index]})
     pygame.event.post(key_down_event)
     
     return keys[index]
     
-keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_m, pygame.K_i, pygame.K_s, pygame.K_UP, 
-        pygame.K_DOWN, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, 
-        pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9]
+keys = [pygame.K_ESCAPE, pygame.K_ESCAPE, pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_RETURN, pygame.K_RETURN, 
+        pygame.K_m, pygame.K_m, pygame.K_m, pygame.K_i, pygame.K_UP, pygame.K_DOWN, 
+        pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
+
+inventory_keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_i, pygame.K_UP, pygame.K_DOWN,]
 # Main game loop
 global_running = True
 while global_running:
@@ -1189,11 +1204,13 @@ while global_running:
             if event.key == pygame.K_ESCAPE and running and flags["inventory_open"]:
                 screen_id = inventory_location
                 option_index = 0
+                action = 0
                 flags["inventory_open"] = False
             
             elif event.key == pygame.K_ESCAPE and running and flags["spell_book_open"]:
                 screen_id = inventory_location
                 option_index = 0
+                action = 0
                 flags["spell_book_open"] = False
             
             elif event.key == pygame.K_ESCAPE and running and (screen_id == "buy" or screen_id == "sell"):
@@ -1252,16 +1269,14 @@ while global_running:
                 screen_id = "forest"
             elif event.key == pygame.K_m and running and screen_id == "shadow_peaks_path":
                 screen_id = "forest"
-            
-            elif event.key == pygame.K_i and running and screen_id != "inventory" and screen_id != "current_spells"\
-                        and screen_id != "sell" and screen_id != "buy":
+            # TODO: Inventory open and close bugg
+            elif event.key == pygame.K_i and running and not flags["inventory_open"] and screen_id != "current_spells":
                 inventory_location = screen_id
                 screen_id = "inventory"
                 tip_text = "To close an inventory press ' Esc '" 
                 flags["inventory_open"] = True
             
-            elif event.key == pygame.K_s and running and screen_id != "current_spells" and screen_id != "inventory"\
-                        and screen_id != "sell" and screen_id != "buy":
+            elif event.key == pygame.K_s and running and not flags["spell_book_open"] and screen_id != "inventory":
                 inventory_location = screen_id
                 screen_id = "current_spells"
                 tip_text = "To close an spellbook press ' Esc '" 
