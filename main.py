@@ -840,6 +840,7 @@ def processingEvents():
     global pay_for_rest
     global previous_store_screen
     global current_store
+    global location_of_end
 
     if screen_id in screens:
         print(screen_id)
