@@ -345,6 +345,7 @@ def church_quest(screens, flags, inventory, action, pay_for_rest):
 
     elif action != 0 and find_item_index_inventory("Herbs", inventory) \
         and not flags["church_quest_done"]:
+        # TODO: BUGG
         if screens["church_quest"]["options"][action - 1][0] == "Give herbs to the monk" \
                 and inventory[find_item_index_inventory("Herbs", inventory)]["count"] >= 3:
             del_all_options(screens["church_quest"]["options"])

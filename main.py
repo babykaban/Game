@@ -109,7 +109,8 @@ flags = {"hero_saw_bandits": False,
          "fight_wolves": False,
          "buy_merchant_open": False,
          "buy_store_open": False,
-         "sell_open": False} 
+         "sell_open": False,
+         "allow_to_open_inventory": False} 
 
 # NOTE: for testing["Bastion Sword", "equip", {"type_of_weapon": "sword", "damage": 20}]
 """
@@ -239,10 +240,10 @@ inventory = [{"name": "Metal sword", "status": ["equipped", "weapon"], "stats":{
 # NOTE: for testing ["FireBall", {"effect": "fire", "damage": 30, "mana_cost": 60}]
 spells = [{"name": "Arcane Misile", "stats" :{"effect": "nothing", "damage": 15, "mana_cost": 10}}]
 
-state = {"health": 100,
-         "max_mana": 100,
-         "mana": 100,
-         "gold": 100}
+state = {"health": 1000,
+         "max_mana": 1000,
+         "mana": 1000,
+         "gold": 1000}
 
 # Explore events in swamps
 swamp_events = ["statue", "obelisk", "rusted_sword", "purple_flowers_1", 
@@ -628,8 +629,8 @@ def showSpells():
 
 def check_mana_health_gold(screen_id):
 
-    if state["health"] > 100:
-        state["health"] = 100
+    if state["health"] > 1000: # While Debugging
+        state["health"] = 1000
     elif state["health"] <= 0:
         screen_id = "GAME_OVER"
     
@@ -883,88 +884,107 @@ def processingEvents():
         
         elif screen_id != "inventory":
             tip_text = "To open an inventory press ' I '" 
-        
 
         if screen_id == "innkeeper_lose_10_gold":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(state, screens)
         
         if screen_id == "innkeeper_lose_30_gold":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(state, screens)
 
         elif screen_id == "innkeeper":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func(action, screens, inventory, state)
 
         elif screen_id == "party":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(flags, screens)
 
         elif screen_id == "old_woman":
-           func = eval(screens[screen_id]["function"])
-           func(flags, screens)
+            flags["allow_to_open_inventory"] = False
+            func = eval(screens[screen_id]["function"])
+            func(flags, screens)
         
         elif screen_id == "village":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func(screens)
  
         elif screen_id == "store":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             previous_store_screen =  func(screens, previous_store_screen)
         
         elif screen_id == "hunter_sells":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             previous_store_screen =  func(previous_store_screen)
         
         elif screen_id == "forest":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(flags, screens, screen_id, action, inventory,
            forest_events, forest_events_weights, numbered_forest_events)
         
         elif screen_id == "villagers":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screen_id, action, inventory, flags, state, forest_events, forest_events_weights)
         
         elif screen_id == "herbs":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(action, inventory, numbered_forest_events, forest_events_weights, forest_events)
         
         elif screen_id == "boar":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(action, screen_id, inventory, 
                         numbered_forest_events, forest_events_weights, forest_events)
         
         elif screen_id == "travelers":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(action, screen_id, numbered_forest_events, 
                                     forest_events_weights, forest_events, state)
 
         elif screen_id == "mushrooms":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             screen_id, action, location_of_end = func(screen_id, action, location_of_end)
         
         elif screen_id == "bear":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screens, screen_id, action, inventory, flags, state)
         
         elif screen_id == "bear_lair":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screen_id, action, lair_events, lair_weights, forest_events, inventory, state)
         
         elif screen_id == "choose_wolf":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func()
 
         elif screen_id == "wolves":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screens, screen_id, action, flags, state, inventory)
 
         elif screen_id == "stone":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screen_id, action, forest_events, forest_events_weights, state)
 
         elif screen_id == "buy" or screen_id == "sell":
+            flags["allow_to_open_inventory"] = True
             if previous_store_screen == "store":
                 current_store = store
                 if screen_id == "buy":
@@ -984,148 +1004,185 @@ def processingEvents():
                 action = func(screen_id, screens, state, inventory, spells, merchant_store, items_sell_prices, action)
         
         elif screen_id == "women_jacob":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(flags, screens)
 
         elif screen_id == "man_jacob":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens)
 
         #TODO: BUGG
         elif screen_id == "find_path" and action == 1:
+            flags["allow_to_open_inventory"] = True
            # func = eval(screens[screen_id]["function"])
             location_of_end = "Swamps: tried to find path"
         
         elif screen_id == "swamps":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screens, screen_id, flags, swamp_events, swamps_events_weights, action)
         
         elif screen_id == "swamps_path":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             action = func(screens, flags, action)
 
         elif screen_id == "church_jacob":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens)
         
         elif screen_id == "choose_guard":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func()
         
         elif screen_id == "bribe_guards":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(state, flags)
         
         elif screen_id == "fight_guards":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func(screens, flags, action)
         
         elif screen_id == "in_tavern":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func(flags, screens)
 
         elif screen_id == "choose_bandit":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func()
 
         elif (screen_id == "attack" or screen_id == "spells" or screen_id == "fight"):
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func()
         
         elif screen_id == "evade":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func()
         
         elif screen_id == "inventory":
+            flags["allow_to_open_inventory"] = False
+            flags["inventory_open"] = True
             func = eval(screens[screen_id]["function"])
             func()
         
         elif screen_id == "current_spells":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func()
         
         elif screen_id == "church":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"]) 
             func(screens, flags, state, action, pay_for_rest)
 
         elif screen_id == "church_quest":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             # TODO: Fix rest action
             pay_for_rest = func(screens, flags, inventory, action, pay_for_rest)
 
         elif screen_id == "sad_man":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(parameters)
 
         elif screen_id == "jacob_home" :
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             action = func(screens, flags, action)
         
         elif screen_id == "inside_jacob_house":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             action = func(screens, flags, inventory, action)   
 
         elif screen_id == "you_got_drunk":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(flags, state, screens)   
 
         elif screen_id == "statue":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens, state, inventory, action)
        
         elif screen_id == "obelisk":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens, state, spells, action)
        
         elif screen_id == "rusted_sword":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens, state, inventory, action)
        
         elif screen_id == "purple_flowers_1":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens, state, inventory, action)
         
         elif screen_id == "purple_flowers_2":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens, state, inventory, action)
         
         elif screen_id == "solid_ground":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens, state, action)
 
         elif screen_id == "creature":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func(screens, flags, state, action)
         
         elif screen_id == "goblin":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func(screens, flags, action)
         
         elif screen_id == "shadow_peaks_path":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             screen_id, action = func(screens, screen_id, action, state, flags)
             
         elif screen_id == "negotiate_troll":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens)
         
         elif screen_id == "ask_troll":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens)
         
         elif screen_id == "pay_troll":
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens)
  
         elif screen_id == "offer_troll": 
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens, inventory, action)
 
         elif screen_id == "troll_golden_locket": 
+            flags["allow_to_open_inventory"] = False
             func = eval(screens[screen_id]["function"])
             func(screens)
         
         elif screen_id == "fight_troll":
+            flags["allow_to_open_inventory"] = True
             func = eval(screens[screen_id]["function"])
             func(screens, flags, action)
 
@@ -1138,6 +1195,7 @@ def processingEvents():
                                          'dotted with homes.'
 
         elif screen_id == "GAME_OVER":
+            flags["allow_to_open_inventory"] = False
             if screen_id == "GAME_OVER" and action != 0 and action - 1 < len(screens["GAME_OVER"]["options"]):
                 if screens["GAME_OVER"]["options"][action - 1][0] == "Close Game":
                     restartGame()
@@ -1185,8 +1243,7 @@ def randomAction(w_screen, keys):
     
     return keys[index]
     
-keys = [pygame.K_ESCAPE, pygame.K_ESCAPE, pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_RETURN, pygame.K_RETURN, 
-        pygame.K_m, pygame.K_m, pygame.K_m, pygame.K_UP, pygame.K_DOWN, 
+keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_m, pygame.K_i, pygame.K_UP, pygame.K_DOWN, 
         pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
 
 inventory_keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_i, pygame.K_UP, pygame.K_DOWN,]
@@ -1273,12 +1330,12 @@ while global_running:
             elif event.key == pygame.K_m and running and screen_id == "shadow_peaks_path":
                 screen_id = "forest"
             # TODO: Inventory open and close bugg
-            elif event.key == pygame.K_i and running and not flags["inventory_open"] and screen_id != "current_spells":
+            elif event.key == pygame.K_i and running and not flags["inventory_open"] and flags["allow_to_open_inventory"]:
                 inventory_location = screen_id
                 screen_id = "inventory"
                 tip_text = "To close an inventory press ' Esc '" 
                 flags["inventory_open"] = True
-            
+
             elif event.key == pygame.K_s and running and not flags["spell_book_open"] and screen_id != "inventory":
                 inventory_location = screen_id
                 screen_id = "current_spells"
