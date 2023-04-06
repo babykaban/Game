@@ -1,19 +1,9 @@
-import pygame
-pygame.init()
+import re
 
-# create a window
-screen = pygame.display.set_mode((640, 480))
+regex = r"\b\w*(\w)\1{2,}\w*\b"
 
-# create a KEYDOWN event for the 'a' key
-
-
-# add the event to the event queue
-
-
-# update the display
-pygame.display.update()
-
-# wait for a few seconds
-pygame.time.wait(2000)
-
-pygame.quit()
+word = "bookkeeperr"
+if re.search(r"\b\w*(\w)\1{2,}\w*\b", word):
+    print("The word contains 3 or more repetitions.")
+else:
+    print("The word does not contain 3 or more repetitions.")
