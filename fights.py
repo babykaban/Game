@@ -328,40 +328,41 @@ def evade_enemy(enemy, parameters):
 def attack_enemy_in_multiple_fight_weapon(index, enemes, enemes_counter, choose_screen, parameters, events):
     
     # Set loot function
-    loot_func = enemes[index - 1]["loot"]
-    
-    # Find a weapon
-    weapon = parameters["inventory"][find_equipped_item_index_inventory(parameters["inventory"])]["stats"]
-    # Calculate damage
-    damage = enemes[index - 1]["weapon_damage"] * weapon["damage"]
-    if weapon["type_of_weapon"] == "sword":
-        damage *= enemes[index - 1]["sword_damage"]
-    elif weapon["type_of_weapon"] == "axe":
-        damage *= enemes[index - 1]["axe_damage"]
-    
-    # Check if enemes[index - 1] dead and calculate enemes[index - 1] stats
-    if roll() > enemes[index - 1]["weapon_miss_chance"]:
-        enemes[index - 1]["health"] -= int(round(damage, 0))
-        if enemes[index - 1]["health"] <= 0:
-            parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage.  \\p\n" \
-                                        + enemes[index - 1]["name"] + " is dead. \\p\n"
-            parameters["screens"]["loot"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage.  \\p\n" \
-                                        + enemes[index - 1]["name"] + " is dead. \\p\n"
-            
-            enemes_counter, parameters["screen_id"], parameters["action"], parameters["location_to_move"], events = \
-                    loot_func(enemes[index - 1], enemes, enemes_counter, parameters, events)
-            del enemes[index - 1]
-            del parameters["screens"][choose_screen]["options"][index - 1]
-            
+    if index <= enemes:
+        loot_func = enemes[index - 1]["loot"] # TODO: BUGG
+        
+        # Find a weapon
+        weapon = parameters["inventory"][find_equipped_item_index_inventory(parameters["inventory"])]["stats"]
+        # Calculate damage
+        damage = enemes[index - 1]["weapon_damage"] * weapon["damage"]
+        if weapon["type_of_weapon"] == "sword":
+            damage *= enemes[index - 1]["sword_damage"]
+        elif weapon["type_of_weapon"] == "axe":
+            damage *= enemes[index - 1]["axe_damage"]
+        
+        # Check if enemes[index - 1] dead and calculate enemes[index - 1] stats
+        if roll() > enemes[index - 1]["weapon_miss_chance"]:
+            enemes[index - 1]["health"] -= int(round(damage, 0))
+            if enemes[index - 1]["health"] <= 0:
+                parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage.  \\p\n" \
+                                            + enemes[index - 1]["name"] + " is dead. \\p\n"
+                parameters["screens"]["loot"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage.  \\p\n" \
+                                            + enemes[index - 1]["name"] + " is dead. \\p\n"
+                
+                enemes_counter, parameters["screen_id"], parameters["action"], parameters["location_to_move"], events = \
+                        loot_func(enemes[index - 1], enemes, enemes_counter, parameters, events)
+                del enemes[index - 1]
+                del parameters["screens"][choose_screen]["options"][index - 1]
+                
+            else:
+                parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage. " \
+                                            + enemes[index - 1]["name"] + " \\p\n"
         else:
-            parameters["screens"]["evade"]["text"] = "You have dealt " + str(int(round(damage, 0))) + " damage. " \
-                                        + enemes[index - 1]["name"] + " \\p\n"
-    else:
-        parameters["screens"]["evade"]["text"] = "You have missed. \\p\n"
-    
-    enemes_counter = len(enemes)
-    parameters["screens"][choose_screen]["text"] = ""
-    parameters["screens"]["attack"]["text"] = ""
+            parameters["screens"]["evade"]["text"] = "You have missed. \\p\n"
+        
+        enemes_counter = len(enemes)
+        parameters["screens"][choose_screen]["text"] = ""
+        parameters["screens"]["attack"]["text"] = ""
     
     return enemes_counter, parameters["screen_id"], parameters["action"], parameters["location_to_move"], events
 

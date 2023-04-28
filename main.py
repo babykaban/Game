@@ -1,22 +1,14 @@
-from tkinter import font
 import pygame
 import random
 import json
 
-from pygame.constants import K_DOWN, K_u
+from pygame import key
 
 from events import *
 from fights import *
 from enemes import *
 
-import os
-import sys
 import time
-
-def restartGame():
-    os.system('python main.py')
-    time.sleep(10)
-    exit()
 
 # Initialize Pygame
 pygame.init()
@@ -698,6 +690,7 @@ def add_inventory_in_screen():
         pass
     
 
+# TODO: BUGG
 def showingDescriptionForItemsAndSpells(index, items):
     item = items[index]
     text = ""
@@ -835,6 +828,9 @@ It checks the event and calls the corresponding function to this event
 
 """
 def processingEvents():
+
+    global global_running
+
     global tip_text
     global screen_id
     global action
@@ -1198,7 +1194,7 @@ def processingEvents():
             flags["allow_to_open_inventory"] = False
             if screen_id == "GAME_OVER" and action != 0 and action - 1 < len(screens["GAME_OVER"]["options"]):
                 if screens["GAME_OVER"]["options"][action - 1][0] == "Close Game":
-                    restartGame()
+                    global_running = False
             elif location_of_end == "Swamps: tried to find path":
                 type_of_death = random.randint(1, 3)
                 if type_of_death == 1:
@@ -1233,27 +1229,34 @@ def processingEvents():
 # TODO: GOLDEN LOCKET BUGGG
 
 # TODO: Tester using this function
-keys_combination = []
-def randomAction(w_screen, keys):
+#keys_combination = []
+def randomAction(keys):
     amount = len(keys) - 1
     index = random.randint(0, amount)
-    keys_combination.append(keys[index])
+ #   keys_combination.append(keys[index])
     key_down_event = pygame.event.Event(pygame.KEYDOWN, {'key': keys[index]})
     pygame.event.post(key_down_event)
     
     return keys[index]
     
-keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_m, pygame.K_i, pygame.K_UP, pygame.K_DOWN, 
-        pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6]
+keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_m, pygame.K_UP, pygame.K_DOWN, 
+        pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, 
+        pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_m, pygame.K_UP, pygame.K_DOWN, 
+        pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_i]
 
 inventory_keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_i, pygame.K_UP, pygame.K_DOWN,]
+
 # Main game loop
 global_running = True
+start_time = time.time()
+action_log = {"number": 0, "screen": "", "action": 0, "time": 0}
+# Open a file in write mode
+file = open('log.txt', 'w')
+
 while global_running:
     if screen_id in screens:
         watch_screen = screens[screen_id]
-
-    print(randomAction(watch_screen, keys))
+    print(randomAction(keys))
 
     # Handle events
     for event in pygame.event.get():
@@ -1266,12 +1269,15 @@ while global_running:
                 option_index = 0
                 action = 0
                 flags["inventory_open"] = False
+
+                action_log["action"] = "ESC"
             
             elif event.key == pygame.K_ESCAPE and running and flags["spell_book_open"]:
                 screen_id = inventory_location
                 option_index = 0
                 action = 0
                 flags["spell_book_open"] = False
+                action_log["action"] = "ESC"
             
             elif event.key == pygame.K_ESCAPE and running and (screen_id == "buy" or screen_id == "sell"):
                 if(screen_id == "buy"):
@@ -1281,71 +1287,92 @@ while global_running:
                     flags["sell_open"] = False
                 option_index = 0
                 screen_id = previous_store_screen
+                action_log["action"] = "ESC"
             
             elif event.key == pygame.K_ESCAPE and running and screen_id == "move":
                 screen_id = location
+                action_log["action"] = "ESC"
             
             elif event.key == pygame.K_SPACE:
                 running = True
+                action_log["action"] = "SPACE"
             
             elif event.key == pygame.K_RETURN and running and screen_id == "inventory":
                 processingInventoryEvents(option_index)
+                action_log["action"] = "ENTER"
             
             elif event.key == pygame.K_RETURN and running and (screen_id == "buy" or screen_id == "sell"):
                 processingStoreEvents(screen_id, screens, state, inventory, spells, current_store, items_sell_prices, option_index)
+                action_log["action"] = "ENTER"
                 
             elif event.key == pygame.K_1:
                 action = 1
                 print("Key 1 pressed")
+                action_log["action"] = "KEY_1"
             elif event.key == pygame.K_2:
                 action = 2
                 print("Key 2 pressed")
+                action_log["action"] = "KEY_2"
             elif event.key == pygame.K_3:
                 action = 3
                 print("Key 3 pressed")
+                action_log["action"] = "KEY_3"
             elif event.key == pygame.K_4:
                 action = 4
                 print("Key 4 pressed")
+                action_log["action"] = "KEY_4"
             elif event.key == pygame.K_5:
                 action = 5
                 print("Key 5 pressed")
+                action_log["action"] = "KEY_5"
             elif event.key == pygame.K_6:
                 action = 6
                 print("Key 6 pressed")
+                action_log["action"] = "KEY_6"
             elif event.key == pygame.K_7:
                 action = 7
                 print("Key 7 pressed")
+                action_log["action"] = "KEY_7"
             elif event.key == pygame.K_8:
                 action = 8
                 print("Key 8 pressed")
+                action_log["action"] = "KEY_8"
             elif event.key == pygame.K_9:
                 action = 9
                 print("Key 9 pressed")
+                action_log["action"] = "KEY_9"
             elif event.key == pygame.K_m and running and (screen_id == "village" or screen_id == "store" or
                                             screen_id == "forest" or screen_id == "swamps_path"):
                 location = screen_id
                 screen_id = "move"
+                action_log["action"] = "KEY_M"
             elif event.key == pygame.K_m and screen_id == "hunter_sells":
                 screen_id = "forest"
+                action_log["action"] = "KEY_M"
             elif event.key == pygame.K_m and running and screen_id == "shadow_peaks_path":
                 screen_id = "forest"
+                action_log["action"] = "KEY_M"
             # TODO: Inventory open and close bugg
             elif event.key == pygame.K_i and running and not flags["inventory_open"] and flags["allow_to_open_inventory"]:
                 inventory_location = screen_id
                 screen_id = "inventory"
                 tip_text = "To close an inventory press ' Esc '" 
                 flags["inventory_open"] = True
+                flags["allow_to_open_inventory"] = False
+                action_log["action"] = "KEY_I"
 
             elif event.key == pygame.K_s and running and not flags["spell_book_open"] and screen_id != "inventory":
                 inventory_location = screen_id
                 screen_id = "current_spells"
                 tip_text = "To close an spellbook press ' Esc '" 
                 flags["spell_book_open"] = True
+                action_log["action"] = "KEY_S"
             
             elif event.key == pygame.K_UP and running:
                 if(option_index > 0):
                     option_index -= 1
                 print("up " + str(option_index) + "\n")   
+                action_log["action"] = "KEY_UP"
             
             elif event.key == pygame.K_DOWN and running:
                 if(option_index < len(inventory) - 1) and flags["inventory_open"]:
@@ -1365,6 +1392,7 @@ while global_running:
 
 
                 print("down " + str(option_index) + "\n")   
+                action_log["action"] = "KEY_DOWN"
 
     if running:
         # Update game state
@@ -1404,10 +1432,21 @@ while global_running:
     # Update the display
     pygame.display.update()
 
+    action_log["number"] += 1
+    action_log["screen"] = screen_id
+    action_log["time"] = time.time() - start_time
+    line = "{}. screen: {}, action: {}, time: {:.2f}".format(action_log["number"], action_log["screen"], action_log["action"], action_log["time"])
+    file.write(line + '\n')
+    
     # Control the frame rate
     clock.tick(frame_rate)
     print(clock.tick(frame_rate), "action = ", action)
     
+
+end_time = time.time()
+total_time = end_time - start_time
+print("Total program time:", total_time, "seconds")
+file.close()
 
 # Clean up
 pygame.quit()

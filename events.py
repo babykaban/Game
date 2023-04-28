@@ -96,6 +96,7 @@ def troll_golden_locket(screens):
     move_on, i = find_option("shadow_peaks_path", screens["forest"]["options"])
     screens["forest"]["options"][i] = (move_on[0], "shadow_peaks")
 
+####################
 def add_inventory_in_troll_offer_screen(screens, inventory):
     for item in inventory:
         if item["status"][0] == "counted":
@@ -105,6 +106,7 @@ def add_inventory_in_troll_offer_screen(screens, inventory):
         elif item["name"] == "Golden Locket":
             screens["offer_troll"]["options"].append((item["name"], "troll_golden_locket"))
     screens["offer_troll"]["options"].append(("Cancel", "shadow_peaks_path"))
+######################
 
 def offer_troll(screens, inventory, action):
     if len(screens["offer_troll"]["options"]) == 0:
@@ -369,6 +371,7 @@ def sad_man(parameters):
         check_if_option_in_screen("sad_man_bless", parameters["screens"]["sad_man"]["options"]):
         del_option("sad_man_bless", parameters["screens"]["sad_man"]["options"])
 
+    # TODO: Bless from the man
     # if parameters["action"] == 2:
     #     del parameters["inventory"][find_item_index_inventory("Golden Locket", parameters["inventory"])]
     #     parameters["screen_id"] = "sad_man_bless"
@@ -394,6 +397,9 @@ def village(screens):
 # ============================================ END_VILLAGE_EVENTS ================================================================ #
 
 # ============================================== STORE_EVENTS ================================================================== #
+
+
+############################################################################
 def find_item_idex_store(key, store):
     count = 0
     for item in store:
@@ -415,6 +421,7 @@ def add_store_sell_in_screen(screens, inventory):
         else:
             if item["status"][0] == "equip" or item["status"][0] == "item":
                 screens["sell"]["options"].append((item["name"], "sell"))
+##############################################################################
 
 
 def processingStoreEvents(screen_id, screens, state, inventory, spells, store, items_sell_prices, index):
@@ -513,9 +520,12 @@ def store_screen(screens, previous_store_screen):
         screens["move"]["options"].append(("Go to the Whispering Woods", "forest"))
     previous_store_screen = "store"
     return previous_store_screen
+
+
 def hunter_sells(previous_store_screen):
     previous_store_screen = "hunter_sells"
     return previous_store_screen
+    
 # ============================================== END_STORE_EVENTS ============================================================= #
 
 # ================================================== FOREST_EVENTS ============================================================= #

@@ -7,3 +7,4 @@ write_file.txt
 text.txt
 /__pycache__
 test_text.txt
+log.txt
