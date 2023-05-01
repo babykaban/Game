@@ -1,15 +1,38 @@
-import json
+import pygame
 
-# sample array of dictionaries
-data = [
-    {'name': 'John', 'age': 30},
-    {'name': 'Jane', 'age': 25},
-    {'name': 'Bob', 'age': 40}
-]
+# Initialize Pygame
+pygame.init()
 
-# convert the array of dictionaries into a string
-json_string = json.dumps(data)
+# Set up the window
+screen_width, screen_height = 640, 480
+screen = pygame.display.set_mode((screen_width, screen_height))
 
-# open the file in write mode and write the string to the file
-with open('data.txt', 'w') as file:
-    file.write(json_string)
+# Set up the clock
+clock = pygame.time.Clock()
+fps = 33
+
+# Set up the key flag
+key_pressed = False
+
+# Game loop
+while True:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+        elif event.type == pygame.KEYDOWN:
+            # Ignore key presses if a key is already pressed
+            if not key_pressed:
+                key_pressed = True
+                # Handle the key press here
+
+        elif event.type == pygame.KEYUP:
+            key_pressed = False
+
+    # Update the game state here
+
+    # Draw the screen here
+
+    # Limit the frame rate
+
+    print(clock.tick(fps))

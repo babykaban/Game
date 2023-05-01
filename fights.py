@@ -327,9 +327,10 @@ def evade_enemy(enemy, parameters):
 
 def attack_enemy_in_multiple_fight_weapon(index, enemes, enemes_counter, choose_screen, parameters, events):
     
+    # TODO: BUGG =================================================== 1
     # Set loot function
     if index <= enemes:
-        loot_func = enemes[index - 1]["loot"] # TODO: BUGG
+        loot_func = enemes[index - 1]["loot"] 
         
         # Find a weapon
         weapon = parameters["inventory"][find_equipped_item_index_inventory(parameters["inventory"])]["stats"]

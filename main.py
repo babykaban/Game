@@ -44,8 +44,8 @@ clock = pygame.time.Clock()
 frame_rate = 33
 
 # Global veriables
-screen_id = "intro" # While Debugging
-watch_screen = "intro" # While Debugging
+screen_id = "shadow_peaks_path" # While Debugging
+watch_screen = "shadow_peaks_path" # While Debugging
 previous_store_screen = ""
 running = False
 action = 0 
@@ -690,7 +690,7 @@ def add_inventory_in_screen():
         pass
     
 
-# TODO: BUGG
+# TODO: BUGG ================================================= 3
 def showingDescriptionForItemsAndSpells(index, items):
     item = items[index]
     text = ""
@@ -1249,16 +1249,18 @@ inventory_keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_i, pygame.K_UP, pyg
 # Main game loop
 global_running = True
 start_time = time.time()
-action_log = {"number": 0, "screen": "", "action": 0, "time": 0}
+action_log = {"number": 0, "screen": "", "action": "", "time": 0}
 # Open a file in write mode
 file = open('log.txt', 'w')
 
 while global_running:
     if screen_id in screens:
         watch_screen = screens[screen_id]
-    print(randomAction(keys))
+  #  print(randomAction(keys))
 
     # Handle events
+    # TestLOG
+    print("1 Step" + action_log["action"])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             global_running = False
@@ -1394,6 +1396,9 @@ while global_running:
                 print("down " + str(option_index) + "\n")   
                 action_log["action"] = "KEY_DOWN"
 
+    # TestLOG
+    print("2 Step" + action_log["action"])
+
     if running:
         # Update game state
         screen_id = check_mana_health_gold(screen_id)
@@ -1409,6 +1414,9 @@ while global_running:
         # Blit the background image onto the screen
         screen.blit(background, (0, 0))
         
+        # TestLOG
+        print("3 Step" + action_log["action"])
+
         processingEvents()
         action = changeScreen(action)
         if screen_id in screens:
@@ -1425,6 +1433,9 @@ while global_running:
             showingDescriptionForItemsAndSpells(option_index, spells)
     else:
         screen.blit(background, (0, 0))
+    
+    # TestLOG
+    print("4 Step" + action_log["action"])
 
     pygame.display.flip()
     # Add drawing code here
@@ -1438,10 +1449,13 @@ while global_running:
     line = "{}. screen: {}, action: {}, time: {:.2f}".format(action_log["number"], action_log["screen"], action_log["action"], action_log["time"])
     file.write(line + '\n')
     
+    # TestLOG
+    print("5 Step" + action_log["action"])
+
     # Control the frame rate
     clock.tick(frame_rate)
-    print(clock.tick(frame_rate), "action = ", action)
-    
+    # TestLOG
+    print("6 Step" + action_log["action"])
 
 end_time = time.time()
 total_time = end_time - start_time
