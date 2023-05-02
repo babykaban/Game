@@ -431,7 +431,7 @@ def evade_enemes(enemes, enemes_counter, choose_screen, parameters):
         fight_screen = "attack"
     
     enemes_counter -= 1
-    
+    # TODO: BUGGG
     enemy_damage = random.randint(enemes[enemes_counter - 1]["damage"][0], enemes[enemes_counter - 1]["damage"][1])
     if parameters["action"] == 1:
         if roll() < enemes[enemes_counter - 1]["evade"]:
