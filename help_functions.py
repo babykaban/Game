@@ -60,7 +60,8 @@ def del_all_options_for_key(key, options):
         if opt[1] == key:
             del options[count]
         count += 1
-        
+
+# TODO: BUGGGGG
 def find_option(key, options):
     i = 0
     for opt in options:

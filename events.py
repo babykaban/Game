@@ -75,7 +75,7 @@ def shadow_peaks_path(screens, screen_id, action, state, flags):
     return screen_id, action
 
 def negotiate_troll(screens):
-    del screens["negotiate_troll"] 
+    #del screens["negotiate_troll"] 
     del_option("negotiate_troll", screens["shadow_peaks_path"]["options"])
 
 def ask_troll(screens):

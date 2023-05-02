@@ -41,11 +41,11 @@ text_height = screen_font.get_height()
 clock = pygame.time.Clock()
 
 # Set the desired frame rate (in FPS)
-frame_rate = 33
+frame_rate = 10
 
 # Global veriables
-screen_id = "shadow_peaks_path" # While Debugging
-watch_screen = "shadow_peaks_path" # While Debugging
+screen_id = "intro" # While Debugging
+watch_screen = "intro" # While Debugging
 previous_store_screen = ""
 running = False
 action = 0 
@@ -210,7 +210,7 @@ NOTE:
         {"name": "", "status": [(equipped or equip), "weapon"], "stats":{"type_of_weapon": "(axe or sword)", "damage": 0}}
     
     all counted items in the store should looks like this:
-        {"name": "", "status": ("counted", (general definition: potion, leaves, meat ...)), "count": number of item},
+        {"name": "", "status": ("counted",  (general definition: potion, leaves, meat ...)), "count": number of item},
       
     all tools in the store should looks like this:
         {"name": "", "status": ("tools", "tool")}
@@ -1244,7 +1244,7 @@ keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_m, pygame.K_UP, pygame.K_DOWN
         pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_m, pygame.K_UP, pygame.K_DOWN, 
         pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_i]
 
-inventory_keys = [pygame.K_ESCAPE, pygame.K_RETURN, pygame.K_i, pygame.K_UP, pygame.K_DOWN,]
+test_keys = [pygame.K_ESCAPE, pygame.K_i, pygame.K_1, pygame.K_SPACE]
 
 # Main game loop
 global_running = True
@@ -1256,7 +1256,7 @@ file = open('log.txt', 'w')
 while global_running:
     if screen_id in screens:
         watch_screen = screens[screen_id]
-  #  print(randomAction(keys))
+    print(randomAction(keys))
 
     # Handle events
     # TestLOG
@@ -1348,13 +1348,15 @@ while global_running:
                 location = screen_id
                 screen_id = "move"
                 action_log["action"] = "KEY_M"
+            
             elif event.key == pygame.K_m and screen_id == "hunter_sells":
                 screen_id = "forest"
                 action_log["action"] = "KEY_M"
+            
             elif event.key == pygame.K_m and running and screen_id == "shadow_peaks_path":
                 screen_id = "forest"
                 action_log["action"] = "KEY_M"
-            # TODO: Inventory open and close bugg
+
             elif event.key == pygame.K_i and running and not flags["inventory_open"] and flags["allow_to_open_inventory"]:
                 inventory_location = screen_id
                 screen_id = "inventory"
@@ -1421,6 +1423,7 @@ while global_running:
         action = changeScreen(action)
         if screen_id in screens:
             watch_screen = screens[screen_id]
+        
 
         # Draw to the screen
         showScreen(screen, screen_font, options_font, tip_text)

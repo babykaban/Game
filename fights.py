@@ -24,8 +24,8 @@ def loot_troll(troll, parameters, events):
                                              '+ "Long sword" (25 damage, 100 gold) \\p\n'  \
                                              '+ "Troll hide" (100 gold)'
     
-    parameters["inventory"].append({"name": "Long sword", "status": "equip", "stats":{"type_of_weapon": "sword", "damage": 25}})
-    parameters["inventory"].append({"name": "Troll hide", "status": "item"})
+    parameters["inventory"].append({"name": "Long sword", "status": ["equip", "weapon"], "stats":{"type_of_weapon": "sword", "damage": 25}})
+    parameters["inventory"].append({"name": "Troll hide", "status": ("tools", "tool")})
     parameters["state"]["gold"] += 100
 
     parameters["flags"]["fight_troll"] = False 
@@ -326,10 +326,8 @@ def evade_enemy(enemy, parameters):
 
 
 def attack_enemy_in_multiple_fight_weapon(index, enemes, enemes_counter, choose_screen, parameters, events):
-    
-    # TODO: BUGG =================================================== 1
     # Set loot function
-    if index <= enemes:
+    if index <= len(enemes):
         loot_func = enemes[index - 1]["loot"] 
         
         # Find a weapon
