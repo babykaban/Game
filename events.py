@@ -18,12 +18,12 @@ def in_tavern(flags, screens):
 def innkeeper_lose_10_gold(state, screens):
     state["gold"] -= 10
     del_option("innkeeper_lose_10_gold", screens["innkeeper"]["options"])
-    del screens["innkeeper_lose_10_gold"]
+   # del screens["innkeeper_lose_10_gold"]
 
 def innkeeper_lose_30_gold(state, screens):
     state["gold"] -= 30
     del_option("innkeeper_lose_30_gold", screens["innkeeper"]["options"])
-    del screens["innkeeper_lose_30_gold"]
+    #del screens["innkeeper_lose_30_gold"]
 
 # TODO: BUGGS
 def innkeeper(action, screens, inventory, state):
@@ -39,13 +39,13 @@ def innkeeper(action, screens, inventory, state):
 
 def party(flags, screens):
     if not flags["you_are_drunk"]:
-        del screens["party"]
+       # del screens["party"]
         del_option("party", screens["in_tavern"]["options"])
         flags["you_are_drunk"] = True
         flags["party_in_tavern"] = True
 
 def old_woman(flags, screens):
-    del screens["old_woman"]
+    #del screens["old_woman"]
     del_option("old_woman", screens["in_tavern"]["options"])
     flags["you_know_Jacob"] = True
 
@@ -79,19 +79,19 @@ def negotiate_troll(screens):
     del_option("negotiate_troll", screens["shadow_peaks_path"]["options"])
 
 def ask_troll(screens):
-    del screens["ask_troll"] 
+    #del screens["ask_troll"] 
     del_option("ask_troll", screens["shadow_peaks_path"]["options"])
 
 def pay_troll(screens):
-    del screens["pay_troll"]
-    del screens["shadow_peaks_path"]
+    #del screens["pay_troll"]
+    #del screens["shadow_peaks_path"]
 
     move_on, i = find_option("shadow_peaks_path", screens["forest"]["options"])
     screens["forest"]["options"][i] = (move_on[0], "shadow_peaks")
 
 def troll_golden_locket(screens):
-    del screens["troll_golden_locket"]
-    del screens["shadow_peaks_path"]
+    #del screens["troll_golden_locket"]
+    #del screens["shadow_peaks_path"]
 
     move_on, i = find_option("shadow_peaks_path", screens["forest"]["options"])
     screens["forest"]["options"][i] = (move_on[0], "shadow_peaks")
@@ -160,11 +160,11 @@ def church(screens, flags, state, action, pay):
             state["gold"] -= pay
 
 def church_jacob(screens):
-    del screens["church_jacob"]
+    #del screens["church_jacob"]
     del_option("church_jacob", screens["church"]["options"])
 
 def women_jacob(flags, screens):
-    del screens["women_jacob"]
+    #del screens["women_jacob"]
     del_option("women_jacob", screens["women"]["options"])
     flags["you_know_where_jacob_live"] = True
 
@@ -380,7 +380,7 @@ def sad_man(parameters):
     return parameters["screen_id"], parameters["action"]
 
 def man_jacob(screens):
-    del screens["man_jacob"]
+    #del screens["man_jacob"]
     del_option("man_jacob", screens["sad_man"]["options"])
 
 def village(screens):
